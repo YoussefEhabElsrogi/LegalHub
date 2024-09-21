@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use Database\Factories\UserFactory;
+use App\Models\Expense;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class ExpenseSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        UserFactory::factory()->count(150)->create();
+        Expense::factory()->count(20)->create();
     }
 }
