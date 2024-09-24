@@ -1,9 +1,16 @@
+# Ignore the storage directory
+/storage/*
+!.gitkeep
+
+# Ignore specific files within storage if needed
+/storage/*.key
+
+# Other existing ignores
 /.phpunit.cache
 /node_modules
 /public/build
 /public/hot
 /public/storage
-/storage/*.key
 /vendor
 .env
 .env.backup

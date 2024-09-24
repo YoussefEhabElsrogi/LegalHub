@@ -20,8 +20,7 @@ class AdminFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => '123123123', // password
+            'password' => bcrypt('123123123'), // password
             'phone' => fake()->phoneNumber(),
             // 'role' => fake()->randomElement(['admin', 'superadmin']),
             'image' => fake()->imageUrl(),

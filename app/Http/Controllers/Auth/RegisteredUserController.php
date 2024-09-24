@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Http\Requests\StoreUserRequest;
+use App\Models\Admin;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class RegisteredUserController extends Controller
 {
@@ -28,24 +30,24 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        $validatedData = $request->validated();
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        if ($request->hasFile('image')) {
+            $directory = "images/admins";
+            $newImageName = storeImage($request, $directory);
+            $validatedData['image'] = $directory . '/' . $newImageName;
+        } else {
+            $validatedData['image'] = 'images/default-image.jpeg';
+        }
 
-        event(new Registered($user));
+        $admin = Admin::create($validatedData);
 
-        Auth::login($user);
+        Auth::login($admin);
 
-        return redirect(RouteServiceProvider::HOME);
+        session()->flash('success', 'تم تسجيل الدخول بنجاح، أهلاً وسهلاً بك في لوحة التحكم!');
+
+        // return redirect(RouteServiceProvider::HOME);
     }
 }
