@@ -1,13 +1,25 @@
-<script src="{{ asset('assets/libs/') }}/jquery/jquery.min.js"></script>
-<script src="{{ asset('assets/libs/') }}/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="{{ asset('assets/libs/') }}/simplebar/simplebar.min.js"></script>
-<script src="{{ asset('assets/libs/') }}/node-waves/waves.min.js"></script>
-<script src="{{ asset('assets/libs/') }}/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="{{ asset('assets/libs/') }}/jquery.counterup/jquery.counterup.min.js"></script>
-<script src="{{ asset('assets/libs/') }}/feather-icons/feather.min.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/jquery/jquery.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/popper/popper.js"></script>
+<script src="{{ asset('assets/vendor') }}/js/bootstrap.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/node-waves/node-waves.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/hammer/hammer.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/i18n/i18n.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/typeahead-js/typeahead.js"></script>
+<script src="{{ asset('assets/vendor') }}/js/menu.js"></script>
 
-<script src="{{ asset('assets/js/') }}/app.js"></script>
+<!-- endbuild -->
 
+<!-- Vendors JS -->
+{{-- <script src="{{ asset('assets/vendor') }}/libs/@form-validation/popular.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/@form-validation/bootstrap5.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/@form-validation/auto-focus.js"></script> --}}
+
+<!-- Main JS -->
+<script src="{{ asset('assets/js') }}/main.js"></script>
+
+<!-- Page JS -->
+<script src="{{ asset('assets/js') }}/pages-auth.js"></script>
 </body>
 
 </html>

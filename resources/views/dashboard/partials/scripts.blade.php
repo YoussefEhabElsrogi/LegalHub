@@ -1,27 +1,26 @@
-</div>
-<!-- END wrapper -->
+<!-- Core JS -->
+<script src="{{ asset('assets/vendor') }}/libs/jquery/jquery.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/popper/popper.js"></script>
+<script src="{{ asset('assets/vendor') }}/js/bootstrap.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/node-waves/node-waves.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/hammer/hammer.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/i18n/i18n.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/typeahead-js/typeahead.js"></script>
+<script src="{{ asset('assets/vendor') }}/js/menu.js"></script>
 
-<!-- Vendor -->
-<script src="{{asset('assets/libs')}}/jquery/jquery.min.js"></script>
-<script src="{{asset('assets/libs')}}/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="{{asset('assets/libs')}}/simplebar/simplebar.min.js"></script>
-<script src="{{asset('assets/libs')}}/node-waves/waves.min.js"></script>
-<script src="{{asset('assets/libs')}}/waypoints/lib/jquery.waypoints.min.js"></script>
-<script src="{{asset('assets/libs')}}/jquery.counterup/jquery.counterup.min.js"></script>
-<script src="{{asset('assets/libs')}}/feather-icons/feather.min.js"></script>
+<!-- endbuild -->
 
-<!-- Apexcharts JS -->
-<script src="{{asset('assets/libs')}}/apexcharts/apexcharts.min.js"></script>
+<!-- Vendors JS -->
+<script src="{{ asset('assets/vendor') }}/libs/apex-charts/apexcharts.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/swiper/swiper.js"></script>
+<script src="{{ asset('assets/vendor') }}/libs/datatables-bs5/datatables-bootstrap5.js"></script>
 
-<!-- for basic area chart -->
-<script src="https://apexcharts.com/samples/assets/stock-prices.js"></script>
+<!-- Main JS -->
+<script src="{{ asset('assets/js') }}/main.js"></script>
 
-<!-- Widgets Init Js -->
-<script src="{{asset('assets/images')}}/pages/analytics-dashboard.init.js"></script>
-
-<!-- App js-->
-<script src="{{asset('assets/images')}}/app.js"></script>
-
+<!-- Page JS -->
+<script src="{{ asset('assets/js') }}/dashboards-analytics.js"></script>
 </body>
 
 </html>

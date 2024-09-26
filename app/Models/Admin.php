@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Observers\AdminObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+// #[ObservedBy([AdminObserver::class])]
 class Admin extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -23,6 +25,7 @@ class Admin extends Authenticatable
         'password',
         'phone',
         'image',
+        'role', // تأكد من إضافة 'role' هنا إذا كان هناك
     ];
 
     /**
@@ -42,5 +45,11 @@ class Admin extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'password' => 'hashed'
     ];
+
+    public function hasRole(string $role)
+    {
+        return $this->role === $role;
+    }
 }

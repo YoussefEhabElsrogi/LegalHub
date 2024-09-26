@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Helpers\ImageHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\Admin;
 use App\Providers\RouteServiceProvider;
@@ -30,24 +31,24 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(StoreUserRequest $request)
-    {
-        $validatedData = $request->validated();
+    // public function store(StoreAdminRequest $request)
+    // {
+    //     $validatedData = $request->validated();
 
-        if ($request->hasFile('image')) {
-            $directory = "images/admins";
-            $newImageName = storeImage($request, $directory);
-            $validatedData['image'] = $directory . '/' . $newImageName;
-        } else {
-            $validatedData['image'] = 'images/default-image.jpeg';
-        }
+    //     if ($request->hasFile('image')) {
+    //         $directory = "images/admins";
+    //         $newImageName = storeImage($request, $directory);
+    //         $validatedData['image'] = $directory . '/' . $newImageName;
+    //     } else {
+    //         $validatedData['image'] = 'images/default-image.jpeg';
+    //     }
 
-        $admin = Admin::create($validatedData);
+    //     $admin = Admin::create($validatedData);
 
-        Auth::login($admin);
+    //     Auth::login($admin);
 
-        session()->flash('success', 'تم تسجيل الدخول بنجاح، أهلاً وسهلاً بك في لوحة التحكم!');
+    //     session()->flash('success', 'تم تسجيل الدخول بنجاح، أهلاً وسهلاً بك في لوحة التحكم!');
 
-        // return redirect(RouteServiceProvider::HOME);
-    }
+    //     // return redirect(RouteServiceProvider::HOME);
+    // }
 }

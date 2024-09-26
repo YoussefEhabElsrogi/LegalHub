@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-function storeImage(Request $request, string $directory)
+function storeImage(Request $request, string $directory, string $driver)
 {
     // 1- Get image
     $image = $request->image;
@@ -12,7 +12,7 @@ function storeImage(Request $request, string $directory)
     $newImageName = time() . '-' . $image->getClientOriginalName();
 
     // 3- Move image to the specified directory in the project
-    $image->storeAs($directory, $newImageName, 'public');
+    $image->storeAs($directory, $newImageName, $driver);
 
     // 4- Return the new image name
     return $newImageName;
