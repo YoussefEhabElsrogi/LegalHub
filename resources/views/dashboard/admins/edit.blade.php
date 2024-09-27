@@ -10,7 +10,7 @@
     <div class="card">
         <h5 class="card-header">تعديل مشرف</h5>
         <div class="card-body">
-            <form action="{{ route('admin.update', $admin->id) }}" method="POST">
+            <form action="{{ route('admins.update', $admin->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 

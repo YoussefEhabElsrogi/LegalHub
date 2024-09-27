@@ -31,9 +31,9 @@ class AdminController extends Controller
 
         $admin = Admin::create($validatedData);
 
-        session()->flash('success', 'تم تسجيل المشرف بنجاح');
+        setFlashMessage('success', 'تم تسجيل المشرف بنجاح');
 
-        return to_route('admin.index');
+        return to_route('admins.index');
     }
     public function show($id)
     {
@@ -55,13 +55,13 @@ class AdminController extends Controller
 
         setFlashMessage('success', 'تم تحديث المشرف بنجاح!');
 
-        return to_route('admin.home');
+        return to_route('admins.index');
     }
     public function destroy($id)
     {
         $admin = Admin::findOrFail($id);
 
-        if ($admin->image) {
+        if ($admin->image !== 'images/default-image.jpeg') {
             $imagePath = public_path('admins/' . $admin->image);
 
             if (file_exists($imagePath)) {
@@ -73,6 +73,6 @@ class AdminController extends Controller
 
         setFlashMessage('success', 'تم حذف المشرف بنجاح!');
 
-        return to_route('admin.home');
+        return to_route('admins.index');
     }
 }

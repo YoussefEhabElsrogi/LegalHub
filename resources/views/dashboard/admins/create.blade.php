@@ -2,7 +2,7 @@
 
 @section('title', 'إضافة مشرف')
 
-@section('page', 'المشرفين')
+@section('page', 'المشرفين/')
 
 @section('page-title', 'إضافة مشرف')
 
@@ -10,7 +10,7 @@
     <div class="col-xxl" style="margin-top: -25px">
         <div class="card mb-4">
             <h5 class="card-header">إضافة مشرف</h5>
-            <form action="{{ route('admin.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('admins.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3 p-2">

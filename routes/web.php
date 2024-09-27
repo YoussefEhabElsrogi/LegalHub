@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProcurationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,28 +23,33 @@ Route::get('/', function () {
     return view('dashboard.home');
 })->middleware('auth');
 
-Route::prefix('admin')->name('admin.')->group(function () {
 
-    require __DIR__ . '/auth.php';
+Route::middleware('auth.user')->group(function () {
+    // DASHBORD ROUTES
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.home');
 
-    Route::middleware('auth.user')->group(function () {
-        // Route for the admin dashboard
-        Route::get('/dashboard', [HomeController::class, 'index'])->name('index');
+    // ADMIN ROUTES
+    Route::resource('admins', AdminController::class)
+        ->middleware('check.role');
 
-        // AdminController routes
-        Route::controller(AdminController::class)->middleware('check.role')->group(function () {
-            Route::get('/', 'index')->name('home'); // Admin home page
-            Route::get('/create', 'create')->name('create'); // Form to create
-            Route::post('/', 'store')->name('store'); // Store new data (POST)
+    // CLIENT ROUTES
+    Route::resource('clients', ClientController::class);
 
-            // New routes for show, edit, and delete
-            Route::get('/{id}', 'show')->name('show'); // Show specific admin
-            Route::get('/{id}/edit', 'edit')->name('edit'); // Edit specific admin
-            Route::put('/{id}', 'update')->name('update'); // Update specific admin
-            Route::delete('/{id}', 'destroy')->name('destroy'); // Delete specific admin
-        });
-    });
+    // PROCURATION ROUTES
+    Route::resource('procuration', ProcurationController::class);
 });
+
+
+require __DIR__ . '/auth.php';
+
+
+
+
+
+
+
+
+
 
 
 

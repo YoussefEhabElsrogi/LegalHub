@@ -30,7 +30,7 @@ class AuthenticatedSessionController extends Controller
 
         setFlashMessage('success', 'تم تسجيل الدخول بنجاح.');
 
-        return to_route('admin.index');
+        return to_route('dashboard.home');
     }
 
     /**

@@ -14,8 +14,8 @@
             <p class="card-text"><strong>البريد الإلكتروني:</strong> {{ $admin->email }}</p>
             <p class="card-text"><strong>رقم الهاتف:</strong> {{ $admin->phone }}</p>
             <p class="card-text"><strong>الدور:</strong> {{ ucfirst($admin->role) }}</p>
-            <a href="{{ route('admin.edit', $admin->id) }}" class="btn btn-primary">تعديل</a>
-            <a href="{{ route('admin.home') }}" class="btn btn-secondary">العودة إلى القائمة</a>
+            <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-primary">تعديل</a>
+            <a href="{{ route('admins.index') }}" class="btn btn-secondary">العودة إلى القائمة</a>
         </div>
     </div>
 @endsection

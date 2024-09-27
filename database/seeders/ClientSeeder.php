@@ -19,9 +19,9 @@ class ClientSeeder extends Seeder
 
         $clients->each(function ($client) {
 
-            $procurations = Procuration::factory(4)->create(['client_id' => $client->id]);
+            $procuration = Procuration::factory(10)->create(['client_id' => $client->id]);
 
-            foreach ($procurations as $procuration) {
+            foreach ($procuration as $procuration) {
                 File::factory()->count(2)->create([
                     'fileable_id' => $procuration->id,
                     'fileable_type' => Procuration::class,

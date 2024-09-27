@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href={{ route('admin.index') }} class="app-brand-link">
+        <a href={{ route('dashboard.home') }} class="app-brand-link">
             <span class="app-brand-logo demo">
                 <svg width="32" height="22" viewBox="0 0 32 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -35,13 +35,13 @@
                     <div>المشرفين</div>
                 </a>
                 <ul class="menu-sub">
-                    <li class="menu-item {{ request()->routeIs('admin.create') ? 'active' : '' }}">
-                        <a href="{{ route('admin.create') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admins.create') ? 'active' : '' }}">
+                        <a href="{{ route('admins.create') }}" class="menu-link">
                             <div>اضافة مشرف</div>
                         </a>
                     </li>
-                    <li class="menu-item {{ request()->routeIs('admin.home') ? 'active' : '' }}">
-                        <a href="{{ route('admin.home') }}" class="menu-link">
+                    <li class="menu-item {{ request()->routeIs('admins.index') ? 'active' : '' }}">
+                        <a href="{{ route('admins.index') }}" class="menu-link">
                             <div>عرض المشرفين</div>
                         </a>
                     </li>
@@ -54,53 +54,18 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-layout-sidebar"></i>
-                <div data-i18n="Layouts">Layouts</div>
+                <div>الموكلين</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="layouts-collapsed-menu.html" class="menu-link">
-                        <div data-i18n="Collapsed menu">Collapsed menu</div>
+                <li class="menu-item {{ request()->routeIs('clients.create') ? 'active' : '' }}">
+                    <a href="{{ route('clients.create') }}" class="menu-link">
+                        <div>اضافة موكل</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="layouts-content-navbar.html" class="menu-link">
-                        <div data-i18n="Content navbar">Content navbar</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-content-navbar-with-sidebar.html" class="menu-link">
-                        <div data-i18n="Content nav + Sidebar">Content nav + Sidebar</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="../horizontal-menu-template" class="menu-link" target="_blank">
-                        <div data-i18n="Horizontal">Horizontal</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-without-menu.html" class="menu-link">
-                        <div data-i18n="Without menu">Without menu</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-without-navbar.html" class="menu-link">
-                        <div data-i18n="Without navbar">Without navbar</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-fluid.html" class="menu-link">
-                        <div data-i18n="Fluid">Fluid</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-container.html" class="menu-link">
-                        <div data-i18n="Container">Container</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="layouts-blank.html" class="menu-link">
-                        <div data-i18n="Blank">Blank</div>
+                <li class="menu-item {{ request()->routeIs('clients.index') ? 'active' : '' }}">
+                    <a href="{{ route('clients.index') }}" class="menu-link">
+                        <div>عرض الموكلين</div>
                     </a>
                 </li>
             </ul>
@@ -110,32 +75,17 @@
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons ti ti-files"></i>
-                <div data-i18n="Front Pages">Front Pages</div>
+                <div>التوكيلات</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="../front-pages/landing-page.html" class="menu-link" target="_blank">
-                        <div data-i18n="Landing">Landing</div>
+                <li class="menu-item {{ request()->routeIs('procuration.create') ? 'active' : '' }}">
+                    <a href="{{ route('procuration.create') }}" class="menu-link">
+                        <div>اضافة توكيل</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="../front-pages/pricing-page.html" class="menu-link" target="_blank">
-                        <div data-i18n="Pricing">Pricing</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="../front-pages/payment-page.html" class="menu-link" target="_blank">
-                        <div data-i18n="Payment">Payment</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="../front-pages/checkout-page.html" class="menu-link" target="_blank">
-                        <div data-i18n="Checkout">Checkout</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="../front-pages/help-center-landing.html" class="menu-link" target="_blank">
-                        <div data-i18n="Help Center">Help Center</div>
+                <li class="menu-item {{ request()->routeIs('procuration.index') ? 'active' : '' }}">
+                    <a href="{{ route('procuration.index') }}" class="menu-link">
+                        <div>عرض التوكيلات</div>
                     </a>
                 </li>
             </ul>
