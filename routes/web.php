@@ -5,6 +5,8 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProcurationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\SessionStatausController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +27,7 @@ Route::get('/', function () {
 
 
 Route::middleware('auth.user')->group(function () {
-    // DASHBORD ROUTES
+    // DASHBOARD ROUTES
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.home');
 
     // ADMIN ROUTES
@@ -37,7 +39,14 @@ Route::middleware('auth.user')->group(function () {
 
     // PROCURATION ROUTES
     Route::resource('procuration', ProcurationController::class);
+
+    // SESSION ROUTES
+    Route::resource('sessions', SessionController::class);
+
+    // ADDITIONAL ROUTE FOR SAVED SESSIONS
+    Route::get('session/saved', SessionStatausController::class)->name('session.saved');
 });
+
 
 
 require __DIR__ . '/auth.php';

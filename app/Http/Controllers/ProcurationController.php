@@ -63,10 +63,6 @@ class ProcurationController extends Controller
         $procuration->update($validatedData);
 
         if ($request->hasFile('files')) {
-            foreach ($procuration->files as $file) {
-                deleteFile($file->path, 'uploads');
-            }
-
             foreach ($request->file('files') as $file) {
                 $filePath = storeFile($file, 'uploads/procurations', 'uploads');
 

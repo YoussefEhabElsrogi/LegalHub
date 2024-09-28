@@ -12,11 +12,11 @@ class Session extends Model
 
     protected $fillable = [
         'client_id',
-        'case_type',
-        'case_number',
+        'session_type',
+        'session_number',
         'opponent_name',
         'session_date',
-        'case_status',
+        'session_status',
         'notes',
     ];
 

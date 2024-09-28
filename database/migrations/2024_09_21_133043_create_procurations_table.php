@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('procuration', function (Blueprint $table) {
+        Schema::create('procurations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
             $table->string('authorization_number'); // رقم التوكيل الفعلي
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('procuration');
+        Schema::dropIfExists('procurations');
     }
 };

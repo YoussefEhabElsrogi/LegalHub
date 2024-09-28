@@ -2,6 +2,10 @@
 
 @section('title', 'عرض التوكيلات')
 
+@section('page', 'التوكيلات/')
+
+@section('page-title','عرض التوكيلات')
+
 @section('content')
     <div class="card">
         <h5 class="card-header">التوكيلات</h5>

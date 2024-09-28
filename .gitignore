@@ -24,3 +24,6 @@ yarn-error.log
 /.idea
 /.vscode
 /stubs
+
+# Ignore uploads directory
+/uploads/

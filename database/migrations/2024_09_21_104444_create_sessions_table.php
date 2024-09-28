@@ -11,11 +11,11 @@ class CreateSessionsTable extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
-            $table->string('case_type');
-            $table->string('case_number');
+            $table->string('session_type');
+            $table->string('session_number');
             $table->string('opponent_name');
             $table->date('session_date');
-            $table->enum('case_status', ['سارية', 'محفوظة']); // سارية أو محفوظة
+            $table->enum('session_status', ['سارية', 'محفوظة']); // سارية أو محفوظة
             $table->mediumText('notes')->nullable();
             $table->timestamps();
         });

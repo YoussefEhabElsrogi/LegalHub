@@ -17,11 +17,11 @@ class SessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'case_type' => $this->faker->word(),
-            'case_number' => $this->faker->randomNumber(5),
+            'session_type' => $this->faker->word(),
+            'session_number' => $this->faker->randomNumber(5),
             'opponent_name' => $this->faker->name(),
             'session_date' => $this->faker->date(),
-            'case_status' => $this->faker->randomElement(['سارية', 'محفوظة']),
+            'session_status' => $this->faker->randomElement(['سارية', 'محفوظة']),
             'notes' => $this->faker->sentence(),
         ];
     }
