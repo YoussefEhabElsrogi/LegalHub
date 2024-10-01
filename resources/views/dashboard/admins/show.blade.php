@@ -7,15 +7,31 @@
 @section('page-title', 'عرض المشرف')
 
 @section('content')
-    <div class="card">
+    <div class="card mb-4">
         <h5 class="card-header">تفاصيل المشرف</h5>
         <div class="card-body">
-            <h5 class="card-title">الاسم: {{ $admin->name }}</h5>
-            <p class="card-text"><strong>البريد الإلكتروني:</strong> {{ $admin->email }}</p>
-            <p class="card-text"><strong>رقم الهاتف:</strong> {{ $admin->phone }}</p>
-            <p class="card-text"><strong>الدور:</strong> {{ ucfirst($admin->role) }}</p>
-            <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-primary">تعديل</a>
-            <a href="{{ route('admins.index') }}" class="btn btn-secondary">العودة إلى القائمة</a>
+            <div class="mb-4">
+                <h5 class="card-title">
+                    <i class="ti ti-user ti-lg text-info me-2"></i>
+                    <strong>الاسم:</strong> {{ $admin->name }}
+                </h5>
+                <p class="card-text">
+                    <strong><i class="mdi mdi-email text-success me-1"></i>البريد الإلكتروني:</strong>
+                    <span class="text-muted">{{ $admin->email }}</span>
+                </p>
+                <p class="card-text">
+                    <strong><i class="mdi mdi-phone text-warning me-1"></i>رقم الهاتف:</strong>
+                    <span class="text-muted">{{ $admin->phone }}</span>
+                </p>
+                <p class="card-text">
+                    <strong><i class="mdi mdi-account-circle text-primary me-1"></i>الدور:</strong>
+                    <span class="text-muted">{{ ucfirst($admin->role) }}</span>
+                </p>
+            </div>
+            <div class="d-flex justify-content-between">
+                <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-primary">تعديل</a>
+                <a href="{{ route('admins.index') }}" class="btn btn-secondary">العودة إلى القائمة</a>
+            </div>
         </div>
     </div>
 @endsection

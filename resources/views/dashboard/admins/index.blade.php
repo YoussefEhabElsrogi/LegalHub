@@ -8,10 +8,8 @@
 
 @section('content')
     <div class="card">
-        <h5 class="card-header">
-            جميع المشرفين
-            <a href="{{ route('admins.create') }}" class="btn btn-primary float-end">إضافة مشرف</a>
-        </h5>
+        <x-card-header title="جميع المشرفين" action-url="{{ route('admins.create') }}" action-text="إضافة مشرف" />
+
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead class="table-dark">
@@ -24,7 +22,7 @@
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
-                    @forelse($admins as $admin)
+                    @forelse($regularAdmins as $admin)
                         <tr>
                             <td>
                                 <i class="ti ti-user ti-lg text-info me-3"></i>
@@ -32,43 +30,19 @@
                             </td>
                             <td>{{ $admin->email }}</td>
                             <td>{{ $admin->phone }}</td>
-                            <td><span class="badge bg-label-success me-1">{{ ucfirst($admin->role) }}</span></td>
+                            <td><span class="badge bg-label-success me-1">{{ ucfirst($admin->role ?? 'غير محدد') }}</span>
+                            </td>
                             <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                        data-bs-toggle="dropdown">
-                                        <i class="ti ti-dots-vertical"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="{{ route('admins.show', $admin->id) }}">
-                                            <i class="ti ti-eye me-1"></i> عرض
-                                        </a>
-                                        <a class="dropdown-item" href="{{ route('admins.edit', $admin->id) }}">
-                                            <i class="ti ti-pencil me-1"></i> تعديل
-                                        </a>
-                                        <form action="{{ route('admins.destroy', $admin->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item"
-                                                onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذا المشرف؟');">
-                                                <i class="ti ti-trash me-1"></i> حذف
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
+                                <x-action-buttons :model-id="$admin->id" route-prefix="admins" />
                             </td>
                         </tr>
                     @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-danger">لا يوجد مشرفون مسجلون حتي الأن.</td>
-                        </tr>
+                        <x-no-data-message :colspan="5" message="لا يوجد مشرفون الان" />
                     @endforelse
                 </tbody>
             </table>
         </div>
-        <div class="card-footer">
-            {{ $admins->links() }}
-        </div>
+
+        <x-pagination :collection="$regularAdmins" />
     </div>
 @endsection

@@ -46,19 +46,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="btn-group" style="gap: 5px" role="group" aria-label="Session Actions">
-                                        <a href="{{ route('sessions.show', $session->id) }}"
-                                            class="btn btn-info btn-sm">عرض</a>
-                                        <a href="{{ route('sessions.edit', $session->id) }}"
-                                            class="btn btn-warning btn-sm">تعديل</a>
-                                        <form action="{{ route('sessions.destroy', $session->id) }}" method="POST"
-                                            style="display:inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذه الجلسة؟')">حذف</button>
-                                        </form>
-                                    </div>
+                                    <x-action-buttons :model-id="$session->id" route-prefix="sessions" />
                                 </td>
 
                             </tr>

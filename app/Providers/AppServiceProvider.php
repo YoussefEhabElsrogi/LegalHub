@@ -29,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
                 'password' => '123123123',
                 'phone' => '01124684262',
                 'role' => 'superadmin',
+                'image' => 'images/default-image.jpeg'
             ]
         );
         Paginator::useBootstrap();

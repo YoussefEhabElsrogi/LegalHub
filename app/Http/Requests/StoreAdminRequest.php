@@ -33,7 +33,15 @@ class StoreAdminRequest extends FormRequest
                 'max:255',
                 'unique:admins,email',
             ],
-            'password' => ['required', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                'string',
+                Rules\Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
+            ],
             'phone' => [
                 'required',
                 'string',
@@ -41,10 +49,9 @@ class StoreAdminRequest extends FormRequest
                 'unique:admins,phone',
             ],
             'role' => ['required', 'in:admin,superadmin'],
-            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
-
 
     /**
      * Get the validation error messages that apply to the request.
@@ -54,25 +61,30 @@ class StoreAdminRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'اسم المستخدم مطلوب.',
-            'name.string' => 'اسم المستخدم يجب أن يكون نصًا.',
-            'name.max' => 'اسم المستخدم يجب أن لا يتجاوز 255 حرفًا.',
-            'email.required' => 'البريد الإلكتروني مطلوب.',
-            'email.string' => 'البريد الإلكتروني يجب أن يكون نصًا.',
-            'email.lowercase' => 'البريد الإلكتروني يجب أن يكون بحروف صغيرة.',
-            'email.email' => 'البريد الإلكتروني غير صالح.',
-            'email.max' => 'البريد الإلكتروني يجب أن لا يتجاوز 255 حرفًا.',
-            'email.unique' => 'هذا البريد الإلكتروني موجود بالفعل.',
-            'password.required' => 'كلمة المرور مطلوبة.',
-            'phone.required' => 'رقم الهاتف مطلوب.',
-            'phone.string' => 'رقم الهاتف يجب أن يكون نصًا.',
-            'phone.max' => 'رقم الهاتف يجب أن لا يتجاوز 30 رقما.',
-            'phone.unique' => 'هذا رقم الهاتف موجود بالفعل.',
-            'role.required' => 'الدور مطلوب.',
-            'role.in' => 'الدور يجب أن يكون إما admin أو superadmin.',
-            'image.image' => 'الملف يجب أن يكون صورة.',
-            'image.mimes' => 'الصورة يجب أن تكون من نوع: jpeg, png, jpg, gif, svg.',
-            'image.max' => 'حجم الصورة يجب أن لا يتجاوز 2048 كيلوبايت.',
+            'name.required' => __('validation.required'),
+            'name.string' => __('validation.string'),
+            'name.max' => __('validation.max.string'),
+            'email.required' => __('validation.required'),
+            'email.string' => __('validation.string'),
+            'email.lowercase' => __('validation.lowercase'),
+            'email.email' => __('validation.email'),
+            'email.max' => __('validation.max.string'),
+            'email.unique' => __('validation.unique'),
+            'password.required' => __('validation.required'),
+            'password.min' => __('validation.password.min'),
+            'password.mixed' => __('validation.password.mixed'),
+            'password.numbers' => __('validation.password.numbers'),
+            'password.symbols' => __('validation.password.symbols'),
+            'password.uncompromised' => __('validation.password.uncompromised'),
+            'phone.required' => __('validation.required'),
+            'phone.string' => __('validation.string'),
+            'phone.max' => __('validation.max.string'),
+            'phone.unique' => __('validation.unique'),
+            'role.required' => __('validation.required'),
+            'role.in' => __('validation.in'),
+            'image.image' => __('validation.image'),
+            'image.mimes' => __('validation.mimes'),
+            'image.max' => __('validation.max.file'),
         ];
     }
 }

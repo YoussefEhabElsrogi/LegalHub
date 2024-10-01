@@ -5,20 +5,26 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
-function storeImage(Request $request, string $directory, string $driver)
+function storeImage(Request $request, string $directory, string $driver = 'uploads')
 {
-    // 1- Get image
-    $image = $request->image;
+    // 1- Get the uploaded image
+    $image = $request->file('image');
 
-    // 2- Change its current name
-    $newImageName = time() . '-' . $image->getClientOriginalName();
+    // 2- Check if the uploaded file is an image
+    if (!$image || !$image->isValid() || !in_array($image->getClientOriginalExtension(), ['jpg', 'jpeg', 'png', 'gif'])) {
+        throw new \Exception('الملف المرفوع ليس صورة صالحة');
+    }
 
-    // 3- Move image to the specified directory in the project
+    // 3- Change its current name
+    $newImageName = uniqid('', true) . '-' . time() . '-' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
+
+    // 4- Move image to the specified directory in the project
     $image->storeAs($directory, $newImageName, $driver);
 
-    // 4- Return the new image name
-    return $newImageName;
+    // 5- Return the new image name or full path if needed
+    return "{$directory}/{$newImageName}";
 }
+
 function setFlashMessage($key, $value)
 {
     if (is_string($key) && is_string($value)) {
