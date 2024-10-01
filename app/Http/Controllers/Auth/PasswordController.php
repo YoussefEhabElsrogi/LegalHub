@@ -14,20 +14,20 @@ class PasswordController extends Controller
 {
     public function update(UpdatePasswordRequest $request)
     {
-        $user = Auth::user();
+        $admin = Auth::user();
 
-        if (! Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->current_password, $admin->password)) {
             return back()->withErrors([
                 'current_password' => 'كلمة المرور الحالية غير صحيحة.',
             ]);
         }
 
-        $user->update([
+        $admin->update([
             'password' => Hash::make($request->new_password),
         ]);
 
-        session()->flash('success', 'تم تغيير كلمة المرور بنجاح.');
+        setFlashMessage('success', 'تم تغيير كلمة المرور بنجاح.');
 
-        return redirect()->route('profile.show', ['id' => $user->id]);
+        return redirect()->route('profile.show', ['id' => $admin->id]);
     }
 }

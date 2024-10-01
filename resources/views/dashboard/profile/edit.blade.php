@@ -6,6 +6,31 @@
 
 @section('page-title', 'تعديل المعلومات الشخصية')
 
+@push('css')
+    <style>
+        .card {
+            border: none;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 10px;
+        }
+    </style>
+@endpush
+
 @section('content')
     <div class="card">
         <h5 class="card-header">تعديل المعلومات الشخصية</h5>
@@ -48,14 +73,14 @@
 
                 <div class="mb-3">
                     <label for="image" class="form-label">تغيير صورة الملف الشخصي</label>
-                    <input type="file" class="form-control" id="image" name="image">
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
                     @error('image')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
-                <a href="{{ route('dashboard.home') }}" class="btn btn-secondary">إلغاء</a>
+                <a href="{{ route('profile.show', $admin->id) }}" class="btn btn-secondary">إلغاء</a>
             </form>
         </div>
     </div>

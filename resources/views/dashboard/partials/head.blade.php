@@ -49,7 +49,6 @@
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/css/pages/cards-advance.css" />
 
-    @stack('css')
 
     <!-- Helpers -->
     <script src="{{ asset('assets') }}/vendor/js/helpers.js"></script>
@@ -61,6 +60,7 @@
 </head>
 
 <body>
+    @stack('css')
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">

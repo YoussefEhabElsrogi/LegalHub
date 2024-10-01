@@ -437,19 +437,9 @@
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>
-                    <li>
-                        <a class="dropdown-item" href="javascript:void(0)"
-                            onclick="event.preventDefault(); if(confirm('تحذير: سيتم حذف  الأيميل الخاص بك بشكل نهائي. هل ترغب في المتابعة؟')) document.getElementById('delete-email-form').submit();">
-                            <i class="ti ti-trash me-2 ti-sm"></i>
-                            <span class="align-middle">حذف الأيميل</span>
-                        </a>
 
-                    </li>
-                    <form id="delete-email-form" action="{{ route('profile.destroy', Auth::user()->id) }}"
-                        method="POST" style="display: none;">
-                        @csrf
-                        @method('DELETE')
-                    </form>
+                    @include('dashboard.partials.delete')
+
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>

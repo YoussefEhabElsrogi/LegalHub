@@ -33,7 +33,7 @@ class AdminController extends Controller
                 $newImageName = ImageService::uploadImage($request->file('image'), "{$dir}/admins");
                 $validatedData['image'] = $newImageName;
             } catch (\Exception $e) {
-                setFlashMessage('error', 'فشل رفع الصورة حاول مرة أخرى: ' . $e->getMessage());
+                setFlashMessage('error', 'فشل رفع الصورة حاول مرة أخرى');
                 return redirect()->back()->withInput();
             }
         } else {
@@ -79,7 +79,7 @@ class AdminController extends Controller
             try {
                 ImageService::deleteImage($admin->image);
             } catch (\Exception $e) {
-                setFlashMessage('error', 'فشل حذف الصورة: ' . $e->getMessage());
+                setFlashMessage('error', 'فشل حذف الصورة');
                 return redirect()->back();
             }
         }
