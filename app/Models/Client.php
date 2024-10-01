@@ -24,5 +24,13 @@ class Client extends Model
     {
         return $this->hasMany(Session::class);
     }
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+    public function expenses()
+    {
+        return $this->hasMany(Expense::class);
+    }
     ################################### END RELATIONS
 }

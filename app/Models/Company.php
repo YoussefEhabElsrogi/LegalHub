@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
-class CompanyFoundation extends Model
+class Company extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'client_name',
+        'client_id',
         'establishment_fees',
         'fees',
         'remaining_amount',
@@ -23,6 +23,10 @@ class CompanyFoundation extends Model
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');
+    }
+    public function client()
+    {
+        return $this->belongsTo(Client::class);
     }
     ################################### END RELATIONS
 }

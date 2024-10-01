@@ -15,7 +15,7 @@ class CreateSessionsTable extends Migration
             $table->string('session_number');
             $table->string('opponent_name');
             $table->date('session_date');
-            $table->enum('session_status', ['سارية', 'محفوظة']); // سارية أو محفوظة
+            $table->enum('session_status', ['سارية', 'محفوظة']);
             $table->mediumText('notes')->nullable();
             $table->timestamps();
         });

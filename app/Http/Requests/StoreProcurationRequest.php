@@ -26,7 +26,7 @@ class StoreProcurationRequest extends FormRequest
             'authorization_number' => 'required|string|max:255',
             'notebook_number' => 'required|string|max:255',
             'notes' => 'nullable|string',
-            'files.*' => 'required|file|mimes:pdf|max:2048',
+            'files.*' => 'nullable|file|mimes:pdf|max:2048',
         ];
     }
 
@@ -41,7 +41,7 @@ class StoreProcurationRequest extends FormRequest
             'client_id.required' => 'يجب اختيار عميل.',
             'authorization_number.required' => 'رقم التوكيل مطلوب.',
             'notebook_number.required' => 'رقم السجل مطلوب.',
-            'files.*.required' => 'يجب رفع ملف PDF.',
+            'files.*.file' => 'كل ملف مرفق يجب أن يكون ملفاً.',
             'files.*.mimes' => 'يجب أن تكون الملفات بصيغة PDF فقط.',
             'files.*.max' => 'حجم الملف يجب ألا يتجاوز 2 ميجابايت.',
         ];

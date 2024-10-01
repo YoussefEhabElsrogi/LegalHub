@@ -10,13 +10,16 @@ class Expense extends Model
     use HasFactory;
 
     protected $fillable = [
-        'case',
+        'client_id',
         'expense_name',
         'amount',
         'notes'
     ];
 
     ################################### START RELATIONS
-
+    public function client()
+    {
+        return  $this->belongsTo(Client::class);
+    }
     ################################### END RELATIONS
 }

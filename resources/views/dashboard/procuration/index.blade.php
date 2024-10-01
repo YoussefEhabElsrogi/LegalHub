@@ -4,7 +4,7 @@
 
 @section('page', 'التوكيلات/')
 
-@section('page-title','عرض التوكيلات')
+@section('page-title', 'عرض التوكيلات')
 
 @section('content')
     <div class="card">

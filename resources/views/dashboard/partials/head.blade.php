@@ -9,7 +9,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>{{ env('APP_NAME') }} - @yield('title')</title>
+    <title>{{ $app_name }} - @yield('title')</title>
 
     <meta name="description" content="" />
 
@@ -48,6 +48,8 @@
 
     <!-- Page CSS -->
     <link rel="stylesheet" href="{{ asset('assets') }}/vendor/css/pages/cards-advance.css" />
+
+    @stack('css')
 
     <!-- Helpers -->
     <script src="{{ asset('assets') }}/vendor/js/helpers.js"></script>

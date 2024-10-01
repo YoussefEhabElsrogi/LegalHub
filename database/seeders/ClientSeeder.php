@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Client;
+use App\Models\Company;
+use App\Models\Expense;
 use App\Models\Procuration;
 use App\Models\Session;
 use App\Models\File;
@@ -18,6 +20,10 @@ class ClientSeeder extends Seeder
         $clients = Client::factory()->count(15)->create();
 
         $clients->each(function ($client) {
+
+            Company::factory()->count(5)->create(['client_id' => $client->id]);
+
+            Expense::factory()->count(5)->create(['client_id' => $client->id]);
 
             $procurations = Procuration::factory(10)->create(['client_id' => $client->id]);
 

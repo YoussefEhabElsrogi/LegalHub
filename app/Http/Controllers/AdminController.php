@@ -23,7 +23,7 @@ class AdminController extends Controller
 
         if ($request->hasFile('image')) {
             $directory = "images/admins";
-            $newImageName = storeImage($request, $directory, 'public');
+            $newImageName = storeImage($request, $directory, 'uploads');
             $validatedData['image'] = $directory . '/' . $newImageName;
         } else {
             $validatedData['image'] = 'images/default-image.jpeg';
@@ -62,7 +62,7 @@ class AdminController extends Controller
         $admin = Admin::findOrFail($id);
 
         if ($admin->image !== 'images/default-image.jpeg') {
-            $imagePath = public_path('admins/' . $admin->image);
+            $imagePath = public_path($admin->image);
 
             if (file_exists($imagePath)) {
                 unlink($imagePath);

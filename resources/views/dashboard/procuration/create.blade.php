@@ -6,6 +6,10 @@
 
 @section('page-title', 'إضافة توكيل')
 
+@push('css')
+    <link rel="stylesheet" href="{{ asset('assets/vendor') }}/libs/select2/select2.css" />
+@endpush
+
 @section('content')
     <div class="col-xxl" style="margin-top: -25px">
         <div class="card mb-4">
@@ -15,7 +19,8 @@
 
                 <div class="mb-3 p-2">
                     <label for="client_id" class="form-label">العميل</label>
-                    <select name="client_id" class="form-select" id="client_id">
+                    <select name="client_id" id="select2Basic" class="select2 form-select form-select-lg"
+                        data-allow-clear="true">
                         <option value="">اختر عميل</option>
                         @foreach ($clients as $client)
                             <option value="{{ $client->id }}">{{ $client->name }}</option>
@@ -52,7 +57,7 @@
                 <div class="mb-3">
                     <label for="files" class="form-label">الملفات (PDF فقط)</label>
                     <input type="file" name="files[]" class="form-control" id="files" accept="application/pdf"
-                        multiple >
+                        multiple>
                     @error('files.*')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
@@ -63,3 +68,11 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+    <!-- Page JS -->
+    <script src="{{ asset('assets/vendor') }}/libs/select2/select2.js"></script>
+    <script src="{{ asset('assets/js') }}/forms-selects.js"></script>
+    <script src="{{ asset('assets/js') }}/forms-tagify.js"></script>
+    <script src="{{ asset('assets/js') }}/forms-typeahead.js"></script>
+@endpush

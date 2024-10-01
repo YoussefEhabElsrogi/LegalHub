@@ -25,7 +25,7 @@ class Admin extends Authenticatable
         'password',
         'phone',
         'image',
-        'role', // تأكد من إضافة 'role' هنا إذا كان هناك
+        'role',
     ];
 
     /**
@@ -34,7 +34,6 @@ class Admin extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
         'remember_token',
     ];
 

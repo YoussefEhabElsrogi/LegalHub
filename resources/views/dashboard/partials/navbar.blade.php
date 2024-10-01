@@ -188,7 +188,7 @@
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar">
                                             <img src="{{ asset('assets/img') }}/avatars/1.png" alt
-                                                class="h-auto rounded-circle" />
+                                                class="rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -230,7 +230,7 @@
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar">
                                             <img src="{{ asset('assets/img') }}/avatars/2.png" alt
-                                                class="h-auto rounded-circle" />
+                                                class="rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -273,7 +273,7 @@
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar">
                                             <img src="{{ asset('assets/img') }}/avatars/9.png" alt
-                                                class="h-auto rounded-circle" />
+                                                class="rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -319,7 +319,7 @@
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar">
                                             <img src="{{ asset('assets/img') }}/avatars/5.png" alt
-                                                class="h-auto rounded-circle" />
+                                                class="rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -340,7 +340,7 @@
                                     <div class="flex-shrink-0 me-3">
                                         <div class="avatar">
                                             <img src="{{ asset('assets/img') }}/avatars/6.png" alt
-                                                class="h-auto rounded-circle" />
+                                                class="rounded-circle" />
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -395,18 +395,18 @@
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="{{ asset(Auth::user()->image) }}" alt="صورة المستخدم"
-                            class="h-auto rounded-circle" />
+                        <img src="{{ Auth::user()->image ? asset(Auth::user()->image) : asset('images/default-image.jpeg') }}"
+                            alt="صورة المستخدم" class=" rounded-circle" />
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <a class="dropdown-item" href="pages-account-settings-account.html">
+                        <a class="dropdown-item" href="">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ asset(Auth::user()->image) }}" alt="صورة المستخدم"
-                                            class="h-auto rounded-circle" />
+                                        <img src="{{ Auth::user()->image ? asset(Auth::user()->image) : asset('images/default-image.jpeg') }}"
+                                            class="" style="width: max-width:200px;border-radius:50%" />
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
@@ -420,7 +420,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="pages-profile-user.html">
+                        <a class="dropdown-item" href="{{ route('profile.show', Auth::user()->id) }}">
                             <i class="ti ti-user-check me-2 ti-sm"></i>
                             <span class="align-middle">الصفحة الشخصية</span>
                         </a>
@@ -429,11 +429,27 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="pages-account-settings-account.html">
+                        <a class="dropdown-item" href="{{ route('settings.index') }}">
                             <i class="ti ti-settings me-2 ti-sm"></i>
                             <span class="align-middle">الاعدادات</span>
                         </a>
                     </li>
+                    <li>
+                        <div class="dropdown-divider"></div>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="javascript:void(0)"
+                            onclick="event.preventDefault(); if(confirm('تحذير: سيتم حذف  الأيميل الخاص بك بشكل نهائي. هل ترغب في المتابعة؟')) document.getElementById('delete-email-form').submit();">
+                            <i class="ti ti-trash me-2 ti-sm"></i>
+                            <span class="align-middle">حذف الأيميل</span>
+                        </a>
+
+                    </li>
+                    <form id="delete-email-form" action="{{ route('profile.destroy', Auth::user()->id) }}"
+                        method="POST" style="display: none;">
+                        @csrf
+                        @method('DELETE')
+                    </form>
                     <li>
                         <div class="dropdown-divider"></div>
                     </li>

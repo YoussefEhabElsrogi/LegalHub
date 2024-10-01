@@ -16,7 +16,7 @@
             {{-- Breadcrumbs and Page title --}}
             <h4 class="py-3 mb-4">
                 <span class="text-muted fw-light">
-                    الرئسية / @yield('page') 
+                    الرئسية / @yield('page')
                 </span>
                 @yield('page-title')
             </h4>

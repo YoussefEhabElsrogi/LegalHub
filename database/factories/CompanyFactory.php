@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CompanyFoundation>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company>
  */
-class CompanyFoundationFactory extends Factory
+class CompanyFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,6 @@ class CompanyFoundationFactory extends Factory
     public function definition(): array
     {
         return [
-            'client_name' => $this->faker->name(),
             'establishment_fees' => $this->faker->randomFloat(2, 1000, 5000),
             'fees' => $this->faker->randomFloat(2, 500, 3000),
             'remaining_amount' => $this->faker->randomFloat(2, 0, 1000),

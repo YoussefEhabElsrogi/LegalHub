@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('procurations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
+            $table->foreignId('client_id')->constrained(table: 'clients')->onDelete('cascade');
             $table->string('authorization_number'); // رقم التوكيل الفعلي
             $table->string('notebook_number'); // رقم التوكيل في الدفتر
             $table->mediumText('notes')->nullable();

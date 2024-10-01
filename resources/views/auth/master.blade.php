@@ -17,7 +17,7 @@
         <div class="d-flex col-12 col-lg-5 align-items-center p-sm-5 p-4">
             <div class="w-px-400 mx-auto">
                 @include('auth.partials.logo')
-                <h3 class="mb-1">مرحبًا بكم في {{ env('APP_NAME') }}! 👋</h3>
+                <h3 class="mb-1">مرحبًا بكم في {{ $app_name }}! 👋</h3>
                 <p class="mb-4">يرجى تسجيل الدخول إلى حسابك وبدء المغامرة</p>
 
                 @yield('content')

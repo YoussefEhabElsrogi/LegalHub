@@ -15,10 +15,10 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            $table->string('case');
             $table->string('expense_name'); // اسم المصروف
             $table->decimal('amount', 10, 2); // قيمة المصروف
             $table->mediumText('notes')->nullable(); // ملاحظات (اختياري)
+            $table->foreignId('client_id')->constrained(table: 'clients')->onDelete('cascade');
             $table->timestamps();
         });
     }

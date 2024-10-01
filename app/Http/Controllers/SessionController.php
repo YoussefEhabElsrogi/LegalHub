@@ -6,7 +6,7 @@ use App\Http\Requests\StoreSessionRequest;
 use App\Http\Requests\UpdateSessionRequest;
 use App\Models\Client;
 use App\Models\Session;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class SessionController extends Controller
 {
@@ -92,7 +92,7 @@ class SessionController extends Controller
             'session_type' => $validatedData['session_type'],
             'session_number' => $validatedData['session_number'],
             'opponent_name' => $validatedData['opponent_name'],
-            'session_date' => $validatedData['session_date'],
+            'session_date' =>  Carbon::parse($validatedData['session_date'])->toDate(),
             'session_status' => $validatedData['session_status'],
             'notes' => $validatedData['notes'] ?? null,
         ]);

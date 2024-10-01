@@ -35,7 +35,6 @@ function storeFile($file, $directory, $disk = 'local')
 
     return $path;
 }
-
 function deleteFile($path, $disk = 'local')
 {
     if (Storage::disk($disk)->exists($path)) {

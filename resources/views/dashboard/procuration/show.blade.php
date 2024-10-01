@@ -33,7 +33,7 @@
                                     <a href="{{ asset($file->path) }}" target="_blank">
                                         <i class="fas fa-file-pdf fa-3x" style="color: red;"></i>
                                     </a>
-                                    <p class="mt-2">ملف {{ $index + 1 }}</p> 
+                                    <p class="mt-2">ملف {{ $index + 1 }}</p>
                                 </div>
                             </div>
                         </div>

@@ -15,7 +15,7 @@
                         fill="#7367F0" />
                 </svg>
             </span>
-            <span class="app-brand-text demo menu-text fw-bold">{{ env('APP_NAME') }}</span>
+            <span class="app-brand-text demo menu-text fw-bold">{{ $app_name }}</span>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
@@ -115,12 +115,52 @@
             </ul>
         </li>
 
+        {{-- المصروفات الادارية --}}
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons ti ti-coins"></i>
+                <div>المصروفات الادارية </div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('expenses.create') ? 'active' : '' }}">
+                    <a href="{{ route('expenses.create') }}" class="menu-link">
+                        <div>اضافة مصروف اداري</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->routeIs('expenses.index') ? 'active' : '' }}">
+                    <a href="{{ route('expenses.index') }}" class="menu-link">
+                        <div>عرض المصروفات الادارية </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        {{-- الشركات --}}
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons ti ti-home"></i>
+                <div> الشركات </div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('companies.create') ? 'active' : '' }}">
+                    <a href="{{ route('companies.create') }}" class="menu-link">
+                        <div>اضافة شركة</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->routeIs('companies.index') ? 'active' : '' }}">
+                    <a href="{{ route('companies.index') }}" class="menu-link">
+                        <div>عرض الشركات </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
 
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">الأعدادات</span>
         </li>
         <li class="menu-item">
-            <a href="tables-basic.html" class="menu-link">
+            <a href="{{ route('settings.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div>الأعدادات</div>
             </a>

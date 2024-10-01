@@ -21,7 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
         Admin::updateOrCreate(
             ['email' => 'youssef@gmail.com'],
             [
@@ -30,10 +29,8 @@ class AppServiceProvider extends ServiceProvider
                 'password' => '123123123',
                 'phone' => '01124684262',
                 'role' => 'superadmin',
-                'image' => 'images/default-image.jpeg',
             ]
         );
-
         Paginator::useBootstrap();
     }
 }

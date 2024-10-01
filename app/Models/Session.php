@@ -19,7 +19,7 @@ class Session extends Model
         'session_status',
         'notes',
     ];
-
+    protected $casts = ['session_date' => 'date'];
     ################################### START RELATIONS
     public function client()
     {

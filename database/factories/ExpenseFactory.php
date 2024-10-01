@@ -17,7 +17,6 @@ class ExpenseFactory extends Factory
     public function definition(): array
     {
         return [
-            'case' => $this->faker->word(), 
             'expense_name' => $this->faker->word(), // اسم المصروف العشوائي
             'amount' => $this->faker->randomFloat(2, 50, 1000), // مبلغ عشوائي بين 50 و 1000
             'notes' => $this->faker->sentence(), // جملة عشوائية تمثل الملاحظات

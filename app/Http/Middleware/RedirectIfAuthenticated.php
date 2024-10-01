@@ -20,7 +20,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return to_route('admin.index');
+                return to_route('dashboard.home');
             }
         }
 

@@ -56,9 +56,9 @@
         <div class="mb-3 form-password-toggle">
             <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">كلمة المرور</label>
-                <a href="auth-forgot-password-cover.html">
+                {{-- <a href="auth-forgot-password-cover.html">
                     <small>نسيت كلمة المرور؟</small>
-                </a>
+                </a> --}}
             </div>
             <div class="input-group input-group-merge">
                 <input type="password" id="password" class="form-control" name="password"
