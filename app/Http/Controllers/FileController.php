@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreFileRequest;
 use App\Models\File;
+use App\Services\FileService;
+use Illuminate\Support\Facades\DB;
+use Exception;
 
 class FileController extends Controller
 {
@@ -21,30 +24,26 @@ class FileController extends Controller
             return redirect()->back();
         }
 
-        if ($request->hasFile('files')) {
-            $files = $request->file('files');
+        DB::beginTransaction();
 
-            foreach ($files as $file) {
-                $path = storeFile($file, "uploads/{$dir}", 'uploads');
+        try {
+            $uploadResult = FileService::uploadFiles($request, $dir, $entityId, $entityType);
 
-                File::create([
-                    'fileable_id' => $entityId,
-                    'fileable_type' => "App\Models\\$entityType",
-                    'path' => $path,
-                ]);
+            if ($uploadResult === 0) {
+                setFlashMessage('warning', 'لم يتم رفع أي ملفات.');
+            } else {
+                setFlashMessage('success', 'تم إضافة الملفات بنجاح.');
             }
-        }
-        // else {
-        //     setFlashMessage('error', 'لا يوجد صور من فضلك اضف صور');
-        //     return redirect()->back();
-        // }
 
-        setFlashMessage('success', 'تم إضافة الملفات بنجاح.');
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            setFlashMessage('error', 'فشل رفع الملف');
+            return redirect()->back()->withInput();
+        }
 
         return redirect()->back();
     }
-
-
     public function downloadFile(string $id)
     {
         $file = File::findOrFail($id);
@@ -62,7 +61,7 @@ class FileController extends Controller
     {
         $file = File::findOrFail($id);
 
-        deleteFile($file->path, 'uploads');
+        FileService::deleteFile($file->path, 'uploads');
 
         $file->delete();
 

@@ -23,7 +23,7 @@ class AdminFactory extends Factory
             'password' => bcrypt('123123123'), // password
             'phone' => fake()->phoneNumber(),
             // 'role' => fake()->randomElement(['admin', 'superadmin']),
-            'image' => fake()->imageUrl(),
+            'image' => 'uploads/images/default/default-image.jpeg',
             'remember_token' => Str::random(10),
         ];
     }

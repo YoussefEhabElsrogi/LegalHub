@@ -36,9 +36,6 @@ class UpdateClientRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'required' => 'هذا الحقل مطلوب.',
-            'string' => 'يجب أن يكون هذا الحقل نصًا.',
-            'max' => 'يجب ألا يتجاوز هذا الحقل :max حرفًا.',
             'unique' => 'هذا الرقم القومي موجود بالفعل.',
         ];
     }

@@ -3,96 +3,102 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreProcurationRequest;
+use App\Http\Requests\UpdateProcurationRequest;
 use App\Models\Client;
 use App\Models\Procuration;
+use App\Services\FileService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use App\Helpers\FileHelper;
-use App\Http\Requests\UpdateProcurationRequest;
-use App\Models\File;
+use Illuminate\View\View;
 
 class ProcurationController extends Controller
 {
-    public function index()
+    protected FileService $fileService;
+
+    public function __construct(FileService $fileService)
     {
-        $procurations = Procuration::latest()->paginate(10);
+        $this->fileService = $fileService;
+    }
+
+    public function index(): View
+    {
+        $procurations = Procuration::select(['id', 'client_id', 'authorization_number', 'notebook_number', 'notes'])
+            ->latest()
+            ->paginate(10);
+
         return view('dashboard.procuration.index', compact('procurations'));
     }
 
-    public function create()
+    public function create(): View
     {
-        $clients = Client::all();
+        $clients = Client::select(['id', 'name'])->get();
         return view('dashboard.procuration.create', compact('clients'));
     }
 
-    public function store(StoreProcurationRequest $request)
+    public function store(StoreProcurationRequest $request): RedirectResponse
     {
         $validatedData = $request->validated();
-        $procuration = $this->createProcuration($validatedData);
 
-        if ($request->hasFile('files')) {
-            $files = $request->file('files');
-
-            foreach ($files as $file) {
-                $path = storeFile($file, 'uploads/procurations', 'uploads');
-                $procuration->files()->create(['path' => $path]);
-            }
-        }
-
-        setFlashMessage('success', 'تم إضافة التوكيل بنجاح.');
-        return to_route('procuration.index');
+        return $this->saveProcuration(function () use ($validatedData, $request) {
+            $procuration = $this->createProcuration($validatedData);
+            $this->handleFileUpload($request, $procuration->id);
+        });
     }
 
-    public function show($id)
+    public function show(int $id): View
     {
         $procuration = Procuration::with('files', 'client')->findOrFail($id);
         return view('dashboard.procuration.show', compact('procuration'));
     }
 
-    public function edit(string $id)
+    public function edit(int $id): View
     {
         $procuration = Procuration::findOrFail($id);
-        $clients = Client::all();
+        $clients = Client::select(['id', 'name'])->get();
+
         return view('dashboard.procuration.edit', compact('procuration', 'clients'));
     }
 
-    public function update(UpdateProcurationRequest $request, string $id)
+    public function update(UpdateProcurationRequest $request, int $id): RedirectResponse
     {
         $procuration = Procuration::findOrFail($id);
         $validatedData = $request->validated();
 
-        $procuration->update($validatedData);
-
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $filePath = storeFile($file, 'uploads/procurations', 'uploads');
-
-                $procuration->files()->create([
-                    'path' => $filePath,
-                ]);
-            }
-        }
-
-        setFlashMessage('success', 'تم تحديث التوكيل بنجاح.');
-        return to_route('procuration.index');
+        return $this->saveProcuration(function () use ($procuration, $validatedData, $request) {
+            $procuration->update($validatedData);
+            $this->handleFileUpload($request, $procuration->id);
+        });
     }
 
-    public function destroy(string $id)
+    public function destroy(int $id): RedirectResponse
     {
         $procuration = Procuration::findOrFail($id);
 
-        $procuration->delete();
-
         if ($procuration->files->isNotEmpty()) {
-            foreach ($procuration->files as $file) {
-                deleteFile($file->path, 'uploads');
-            }
+            $this->deleteProcurationFiles($procuration);
         }
+
+        $procuration->delete();
 
         setFlashMessage('success', 'تم حذف التوكيل بنجاح.');
 
-        return to_route('procuration.index');
+        return to_route('procurations.index');
     }
-    private function createProcuration(array $validatedData)
+
+    private function saveProcuration(callable $callback): RedirectResponse
+    {
+        try {
+            $callback();
+            setFlashMessage('success', 'تم تنفيذ العملية بنجاح.');
+        } catch (\Exception $e) {
+            setFlashMessage('error', 'حدث خطأ. حاول مرة أخرى.');
+            return redirect()->back()->withInput();
+        }
+
+        return to_route('procurations.index');
+    }
+
+    private function createProcuration(array $validatedData): Procuration
     {
         return Procuration::create([
             'client_id' => $validatedData['client_id'],
@@ -100,5 +106,19 @@ class ProcurationController extends Controller
             'notebook_number' => $validatedData['notebook_number'],
             'notes' => $validatedData['notes'],
         ]);
+    }
+
+    private function handleFileUpload(Request $request, int $procurationId): void
+    {
+        $directory = 'procurations';
+        $this->fileService->uploadFiles($request, $directory, $procurationId, 'Procuration');
+    }
+
+    private function deleteProcurationFiles(Procuration $procuration): void
+    {
+        foreach ($procuration->files as $file) {
+            $this->fileService->deleteFile($file->path, 'uploads');
+        }
+        $procuration->files()->delete();
     }
 }

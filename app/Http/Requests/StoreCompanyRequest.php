@@ -31,32 +31,4 @@ class StoreCompanyRequest extends FormRequest
             'files.*' => 'nullable|file|mimes:pdf|max:2048', // تعديل ليدعم ملفات PDF متعددة
         ];
     }
-
-    /**
-     * Get the validation error messages that apply to the request.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'client_id.required' => 'اختيار الموكل مطلوب.',
-            'client_id.exists' => 'الموكل المختار غير موجود.',
-            'establishment_fees.required' => 'رسوم التأسيس مطلوبة.',
-            'establishment_fees.numeric' => 'رسوم التأسيس يجب أن تكون رقم.',
-            'establishment_fees.min' => 'رسوم التأسيس يجب أن تكون أكبر من أو تساوي 0.',
-            'advance_amount.required' => 'المبلغ المدفوع مسبقاً مطلوب.',
-            'advance_amount.numeric' => 'المبلغ المدفوع مسبقاً يجب أن يكون رقم.',
-            'advance_amount.min' => 'المبلغ المدفوع مسبقاً يجب أن يكون أكبر من أو يساوي 0.',
-            'fees.required' => 'الرسوم مطلوبة.',
-            'fees.numeric' => 'الرسوم يجب أن تكون رقم.',
-            'remaining_amount.required' => 'المبلغ المتبقي مطلوب.',
-            'remaining_amount.numeric' => 'المبلغ المتبقي يجب أن يكون رقم.',
-            'remaining_amount.min' => 'المبلغ المتبقي يجب أن يكون أكبر من أو يساوي 0.',
-            'notes.string' => 'الملاحظات يجب أن تكون نصاً.',
-            'files.*.file' => 'كل ملف مرفق يجب أن يكون ملفاً.',
-            'files.*.mimes' => 'كل ملف يجب أن يكون بصيغة PDF.',
-            'files.*.max' => 'حجم كل ملف يجب أن لا يتجاوز 2 ميجابايت.',
-        ];
-    }
 }

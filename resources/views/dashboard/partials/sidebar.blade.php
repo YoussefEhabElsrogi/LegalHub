@@ -82,13 +82,13 @@
                 <div>التوكيلات</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('procuration.create') ? 'active' : '' }}">
-                    <a href="{{ route('procuration.create') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('procurations.create') ? 'active' : '' }}">
+                    <a href="{{ route('procurations.create') }}" class="menu-link">
                         <div>اضافة توكيل</div>
                     </a>
                 </li>
-                <li class="menu-item {{ request()->routeIs('procuration.index') ? 'active' : '' }}">
-                    <a href="{{ route('procuration.index') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('procurations.index') ? 'active' : '' }}">
+                    <a href="{{ route('procurations.index') }}" class="menu-link">
                         <div>عرض التوكيلات</div>
                     </a>
                 </li>
@@ -160,7 +160,7 @@
             <span class="menu-header-text">الأعدادات</span>
         </li>
         <li class="menu-item">
-            <a href="{{ route('settings.index') }}" class="menu-link">
+            <a href="{{ route('settings.show') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div>الأعدادات</div>
             </a>

@@ -29,21 +29,4 @@ class StoreProcurationRequest extends FormRequest
             'files.*' => 'nullable|file|mimes:pdf|max:2048',
         ];
     }
-
-    /**
-     * Get the validation messages for the defined validation rules.
-     *
-     * @return array
-     */
-    public function messages(): array
-    {
-        return [
-            'client_id.required' => 'يجب اختيار عميل.',
-            'authorization_number.required' => 'رقم التوكيل مطلوب.',
-            'notebook_number.required' => 'رقم السجل مطلوب.',
-            'files.*.file' => 'كل ملف مرفق يجب أن يكون ملفاً.',
-            'files.*.mimes' => 'يجب أن تكون الملفات بصيغة PDF فقط.',
-            'files.*.max' => 'حجم الملف يجب ألا يتجاوز 2 ميجابايت.',
-        ];
-    }
 }

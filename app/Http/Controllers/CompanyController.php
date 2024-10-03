@@ -6,10 +6,19 @@ use App\Http\Requests\StoreCompanyRequest;
 use App\Http\Requests\UpdateCompanyRequest;
 use App\Models\Client;
 use App\Models\Company;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Services\FileService;
+use Exception;
 
 class CompanyController extends Controller
 {
+    protected $fileService;
+
+    public function __construct(FileService $fileService)
+    {
+        $this->fileService = $fileService;
+    }
+
     public function index()
     {
         $companies = Company::with('client:id,name')->latest()->paginate(10);
@@ -18,32 +27,21 @@ class CompanyController extends Controller
 
     public function create()
     {
-        $clients = Client::all();
+        $clients = Client::select(['id', 'name'])->get();
         return view('dashboard.companies.create', compact('clients'));
     }
+
     public function store(StoreCompanyRequest $request)
     {
-        $validatedData = $request->validated();
+        return $this->handleRequest($request, function () use ($request) {
+            $validatedData = $request->validated();
+            $this->validateFees($validatedData);
 
-        if (!$this->validateFees($validatedData)) {
-            setFlashMessage('error', 'يجب أن تكون الأتعاب مساوية لمجموع الموخر والمقدم.');
-            return redirect()->back()->withInput();
-        }
+            $company = $this->createCompany($validatedData);
+            $this->handleFileUpload($request, $company->id);
 
-        $company = $this->createCompany($validatedData);
-
-        if ($request->hasFile('files')) {
-            $files = $request->file('files');
-
-            foreach ($files as $file) {
-                $path = storeFile($file, 'uploads/companies', 'uploads');
-                $company->files()->create(['path' => $path]);
-            }
-        }
-
-        setFlashMessage('success', 'تم إضافة الشركة بنجاح.');
-
-        return to_route('companies.index');
+            return 'تم إضافة الشركة بنجاح.';
+        });
     }
 
     public function show(string $id)
@@ -55,55 +53,80 @@ class CompanyController extends Controller
     public function edit(string $id)
     {
         $company = Company::findOrFail($id);
-        $clients = Client::all();
+        $clients = Client::select(['id', 'name'])->get();
         return view('dashboard.companies.edit', compact('company', 'clients'));
     }
+
     public function update(UpdateCompanyRequest $request, string $id)
     {
-        $company = Company::findOrFail($id);
-        $validatedData = $request->validated();
+        return $this->handleRequest($request, function () use ($request, $id) {
+            $company = Company::findOrFail($id);
+            $validatedData = $request->validated();
+            $this->validateFees($validatedData);
 
-        if (!$this->validateFees($validatedData)) {
-            setFlashMessage('error', 'يجب أن تكون الأتعاب مساوية لمجموع الموخر والمقدم.');
-            return redirect()->back()->withInput();
+            $company->update($validatedData);
+            $this->handleFileUpload($request, $company->id);
+
+            return 'تم تحديث الشركة بنجاح.';
+        });
+    }
+
+    public function destroy(string $id)
+    {
+        return $this->handleRequest(null, function () use ($id) {
+            $company = Company::findOrFail($id);
+            $this->deleteCompanyFiles($company);
+            $company->delete();
+            return 'تم حذف الشركة بنجاح';
+        });
+    }
+
+    private function createCompany(array $validatedData): Company
+    {
+        return Company::create($validatedData);
+    }
+
+    private function validateFees(array $validatedData): void
+    {
+        if ($validatedData['fees'] != $validatedData['remaining_amount'] + $validatedData['advance_amount']) {
+            throw new Exception('يجب أن تكون الأتعاب مساوية لمجموع المؤخر والمقدم.');
         }
+    }
 
-        $company->update($validatedData);
+    private function handleFileUpload($request, int $companyId): void
+    {
+        $directory = "companies";
+        $uploadResult = $this->fileService->uploadFiles($request, $directory, $companyId, 'Company');
 
-        if ($request->hasFile('files')) {
-            foreach ($request->file('files') as $file) {
-                $filePath = storeFile($file, 'uploads/companies', 'uploads');
+        $message = $uploadResult !== 0 ? 'تم إضافة الملفات بنجاح.' : 'لم يتم رفع أي ملفات.';
+        setFlashMessage($uploadResult !== 0 ? 'success' : 'warning', $message);
+    }
 
-                $company->files()->create([
-                    'path' => $filePath,
-                ]);
-            }
+    private function deleteCompanyFiles(Company $company): void
+    {
+        foreach ($company->files as $file) {
+            $this->fileService->deleteFile($file->path, 'uploads');
+            $file->delete();
         }
+    }
 
-        setFlashMessage('success', 'تم تحديث الشركة بنجاح.');
+    private function flashAndRedirect(string $type, string $message)
+    {
+        setFlashMessage($type, $message);
         return to_route('companies.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    private function handleRequest($request, callable $operation)
     {
-        //
-    }
-    private function createCompany(array $validatedData)
-    {
-        return   Company::create([
-            'client_id' => $validatedData['client_id'],
-            'establishment_fees' => $validatedData['establishment_fees'],
-            'fees' => $validatedData['fees'],
-            'advance_amount' => $validatedData['advance_amount'],
-            'remaining_amount' => $validatedData['remaining_amount'],
-            'notes' => $validatedData['notes'],
-        ]);
-    }
-    private function validateFees(array $validatedData): bool
-    {
-        return $validatedData['fees'] == $validatedData['remaining_amount'] + $validatedData['advance_amount'];
+        DB::beginTransaction();
+
+        try {
+            $message = $operation();
+            DB::commit();
+            return $this->flashAndRedirect('success', $message);
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->flashAndRedirect('error', 'حدث خطا حاول مرة أخري');
+        }
     }
 }

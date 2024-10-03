@@ -28,22 +28,4 @@ class UpdateSettingRequest extends FormRequest
             'twitter' => 'nullable|url',
         ];
     }
-
-    /**
-     * Customize the error messages.
-     *
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'app_name.required' => 'اسم التطبيق مطلوب.',
-            'app_name.string' => 'اسم التطبيق يجب أن يكون نصًا.',
-            'app_name.max' => 'اسم التطبيق يجب أن لا يتجاوز 255 حرفًا.',
-            'facebook.url' => 'رابط فيسبوك يجب أن يكون رابط صالح.',
-            'instagram.url' => 'رابط إنستجرام يجب أن يكون رابط صالح.',
-            'twitter.url' => 'رابط تويتر يجب أن يكون رابط صالح.',
-        ];
-    }
 }
-    

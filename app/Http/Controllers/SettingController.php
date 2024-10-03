@@ -4,29 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateSettingRequest;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Redirect;
 
 class SettingController extends Controller
 {
+    protected $setting;
+
+    public function __construct()
+    {
+        $this->setting = Setting::first();
+    }
+
     public function show()
     {
-        $setting = Setting::first();
-        return view('settings.index', compact('setting'));
+        return view('settings.show', ['setting' => $this->setting]);
     }
+
     public function edit()
     {
-        $setting = Setting::first();
-        return view('settings.edit', compact('setting'));
+        return view('settings.edit', ['setting' => $this->setting]);
     }
+
     public function update(UpdateSettingRequest $request)
     {
         $validatedData = $request->validated();
 
-        $setting = Setting::first();
-
-        $setting->update($validatedData);
+        $this->setting->update($validatedData);
 
         setFlashMessage('success', 'تم تحديث الأعدادات بنجاح');
 
-        return to_route('settings.index');
+        return Redirect::route('settings.show');
     }
 }

@@ -429,7 +429,7 @@
                         <div class="dropdown-divider"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{{ route('settings.index') }}">
+                        <a class="dropdown-item" href="{{ route('settings.show') }}">
                             <i class="ti ti-settings me-2 ti-sm"></i>
                             <span class="align-middle">الاعدادات</span>
                         </a>

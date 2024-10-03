@@ -7,54 +7,38 @@
 @section('page-title', 'عرض التوكيلات')
 
 @section('content')
-    <div class="card">
-        <h5 class="card-header">التوكيلات</h5>
-        <div class="card-body">
-            <a href="{{ route('procuration.create') }}" class="btn btn-primary mb-3">إضافة توكيل جديد</a>
-
-            @if ($procurations->isEmpty())
-                <p>لا توجد توكيلات مسجلة.</p>
-            @else
-                <table class="table">
-                    <thead>
+    <div class="container-fluid">
+        <div class="card mb-4">
+            <x-card-header title="جميع التوكيلات" action-url="{{ route('procurations.create') }}" action-text="إضافة توكيل" />
+            <div class="card-body">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
                         <tr>
+                            <th>العميل</th>
                             <th>رقم التوكيل</th>
                             <th>رقم التوكيل في الدفتر</th>
-                            <th>عدد الملفات</th>
-                            <th>العميل</th>
+                            <th>ملاحظات</th>
                             <th>الإجراءات</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($procurations as $procuration)
+                        @forelse ($procurations as $procuration)
                             <tr>
+                                <td>{{ $procuration->client->name ?? 'غير متوفر' }}</td>
                                 <td>{{ $procuration->authorization_number }}</td>
                                 <td>{{ $procuration->notebook_number }}</td>
-                                <td>{{ $procuration->files->count() }}</td>
-                                <td>{{ $procuration->client->name ?? 'غير متوفر' }}</td>
+                                <td>{{ $procuration->notes ?? 'لا يوجد ملاحظات' }}</td>
                                 <td>
-                                    <a href="{{ route('procuration.show', $procuration->id) }}"
-                                        class="btn btn-info btn-sm">عرض</a>
-                                    <a href="{{ route('procuration.edit', $procuration->id) }}"
-                                        class="btn btn-warning btn-sm">تعديل</a>
-                                    <form action="{{ route('procuration.destroy', $procuration->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذا التوكيل؟')">حذف</button>
-                                    </form>
-
+                                    <x-action-buttons :model-id="$procuration->id" route-prefix="procurations" />
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <x-no-data-message :colspan="4" message="لا يوجد توكيلات الان" />
+                        @endforelse
                     </tbody>
                 </table>
-
-                <div class="mt-3">
-                    {{ $procurations->links() }} <!-- Pagination links -->
-                </div>
-            @endif
+            </div>
         </div>
+        <x-pagination :collection="$procurations" />
     </div>
 @endsection

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\FileService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -22,6 +23,7 @@ class Procuration extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
     public function files(): MorphMany
     {
         return $this->morphMany(File::class, 'fileable');

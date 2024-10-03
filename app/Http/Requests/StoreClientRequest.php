@@ -27,25 +27,4 @@ class StoreClientRequest extends FormRequest
             'national_id' => 'required|string|max:14|unique:clients',
         ];
     }
-
-    /**
-     * Get custom messages for validator errors.
-     *
-     * @return array<string, string>
-     */
-    public function messages(): array
-    {
-        return [
-            'name.required' => 'الاسم مطلوب.',
-            'name.string' => 'يجب أن يكون الاسم نصًا.',
-            'name.max' => 'يجب ألا يتجاوز الاسم 255 حرفًا.',
-            'phone.required' => 'رقم الهاتف مطلوب.',
-            'phone.string' => 'يجب أن يكون رقم الهاتف نصًا.',
-            'phone.max' => 'يجب ألا يتجاوز رقم الهاتف 20 حرفًا.',
-            'national_id.required' => 'الرقم القومي مطلوب.',
-            'national_id.string' => 'يجب أن يكون الرقم القومي نصًا.',
-            'national_id.max' => 'يجب ألا يتجاوز الرقم القومي 14 حرفًا.',
-            'national_id.unique' => 'هذا الرقم القومي مسجل بالفعل.',
-        ];
-    }
 }

@@ -42,7 +42,7 @@ Route::middleware('auth.user')->group(function () {
     Route::resource('clients', ClientController::class);
 
     // PROCURATION ROUTES
-    Route::resource('procuration', ProcurationController::class);
+    Route::resource('procurations', ProcurationController::class);
 
     // SESSION ROUTES
     Route::resource('sessions', SessionController::class);
@@ -74,7 +74,7 @@ Route::middleware('auth.user')->group(function () {
 
     // SETTING ROUTES
     Route::controller(SettingController::class)->name('settings.')->group(function () {
-        Route::get('settings', 'show')->name('index');
+        Route::get('settings', 'show')->name('show');
         Route::get('settings/edit', 'edit')->name('edit');
         Route::put('settings', 'update')->name('update');
     });
