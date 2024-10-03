@@ -7,53 +7,49 @@
 @section('page-title', 'عرض المصروفات الإدارية')
 
 @section('content')
-    <div class="card">
-        <h5 class="card-header">المصروفات الإدارية</h5>
+    <div class="card shadow-sm mb-4">
+        <x-card-header title="جميع المصروفات الادارية" action-url="{{ route('expenses.create') }}"
+            action-text="إضافة مصروف اداري" class="bg-primary text-white" />
+
         <div class="card-body">
-            <a href="{{ route('expenses.create') }}" class="btn btn-primary mb-3">إضافة مصروف جديد</a>
-
-            @if ($expenses->isEmpty())
-                <p>لا توجد مصروفات مسجلة.</p>
-            @else
-                <table class="table">
-                    <thead>
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>اسم الموكل</th>
+                        <th>اسم المصروف</th>
+                        <th>قيمة المصروف</th>
+                        <th>ملاحظات</th>
+                        <th class="text-center">الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($expenses as $expense)
                         <tr>
-                            <th>اسم المصروف</th>
-                            <th>قيمة المصروف</th>
-                            <th>ملاحظات</th>
-                            <th>الإجراءات</th>
+                            <td>{{ $expense->client->name }}</td>
+                            <td>{{ $expense->expense_name }}</td>
+                            <td>{{ number_format($expense->amount, 2) }} جنيهاً</td>
+                            <td>
+                                @if ($expense->notes)
+                                    {{ $expense->notes }}
+                                @else
+                                    <span class="text-danger">غير متوفر ملاحظات</span>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                <x-action-buttons :model-id="$expense->id" route-prefix="expenses" />
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($expenses as $expense)
-                            <tr>
-                                <td>{{ $expense->expense_name }}</td>
-                                <td>{{ number_format($expense->amount, 2) }} جنيهاً</td> <!-- تنسيق القيمة -->
-                                <td>
-                                    @if ($expense->notes)
-                                        {{ $expense->notes }}
-                                    @else
-                                        <span class="text-danger">غير متوفر ملاحظات</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('expenses.show', $expense->id) }}" class="btn btn-info btn-sm">عرض</a>
-                                    <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-warning btn-sm">تعديل</a>
-                                    <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST" style="display:inline;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('هل أنت متأكد من أنك تريد حذف هذا المصروف؟')">حذف</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-
-                <div class="mt-3">
-                    {{ $expenses->links() }} <!-- Pagination links -->
-                </div>
-            @endif
+                    @empty
+                        <tr>
+                            <x-no-data-message :colspan="4" message="لا يوجد مصروفات الان" />
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <x-pagination :collection="$expenses" />
     </div>
 @endsection

@@ -6,60 +6,72 @@ use App\Http\Requests\StoreExpenseRequest;
 use App\Http\Requests\UpdateExpenseRequest;
 use App\Models\Expense;
 use App\Models\Client;
+use Illuminate\Database\Eloquent\Collection;
 
 class ExpenseController extends Controller
 {
+    protected $clients;
+
+    public function __construct(Client $client)
+    {
+        $this->clients = $client::select('id', 'name')->get();
+    }
+
     public function index()
     {
-        $expenses = Expense::latest()->paginate(10);
+        $expenses = Expense::with('client:id,name')->latest()->paginate(10);
         return view('dashboard.expenses.index', compact('expenses'));
     }
+
     public function create()
     {
-        $clients = Client::all();
-        return view('dashboard.expenses.create', compact('clients'));
+        return view('dashboard.expenses.create', ['clients' => $this->clients]);
     }
+
     public function store(StoreExpenseRequest $request)
     {
         $validatedData = $request->validated();
-
         Expense::create($validatedData);
-
-        setFlashMessage('success', 'تم اضافة المصروف بنجاح');
-
+        $this->setFlashMessage('success', 'تم اضافة المصروف بنجاح');
         return to_route('expenses.index');
     }
+
     public function show(string $id)
     {
-        $expense = Expense::FindOrFail($id);
+        $expense = $this->getExpense($id);
         return view('dashboard.expenses.show', compact('expense'));
     }
+
     public function edit(string $id)
     {
-        $clients = Client::all();
-        $expense = Expense::findOrFail($id);
-        return view('dashboard.expenses.edit', compact('expense', 'clients'));
+        $expense = $this->getExpense($id);
+        return view('dashboard.expenses.edit', ['expense' => $expense, 'clients' => $this->clients]);
     }
+
     public function update(UpdateExpenseRequest $request, string $id)
     {
-        $expense = Expense::findOrFail($id);
-
-        $validateData = $request->validated();
-
-        $expense->update($validateData);
-
-        setFlashMessage('success', 'تم تحديث المصروف بنجاح');
-
+        $expense = $this->getExpense($id);
+        $validatedData = $request->validated();
+        $expense->update($validatedData);
+        $this->setFlashMessage('success', 'تم تحديث المصروف بنجاح');
         return to_route('expenses.index');
     }
+
     public function destroy(string $id)
     {
-        $expense = Expense::findOrFail($id);
-
+        $expense = $this->getExpense($id);
         $expense->delete();
-
-        setFlashMessage('success', 'تم حذف المصروف بنجاح');
-
+        $this->setFlashMessage('success', 'تم حذف المصروف بنجاح');
         return to_route('expenses.index');
+    }
+
+    private function getExpense(string $id): Expense
+    {
+        return Expense::with('client:id,name,phone')->findOrFail($id);
+    }
+
+    private function setFlashMessage(string $type, string $message)
+    {
+        session()->flash($type, $message);
     }
 }
