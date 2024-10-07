@@ -30,5 +30,9 @@ class Session extends Model
     {
         return $this->morphMany(File::class, 'fileable');
     }
+    public function reminders()
+    {
+        return $this->hasMany(Reminder::class);
+    }
     ################################### END RELATIONS
 }

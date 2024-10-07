@@ -16,7 +16,7 @@ class Client extends Model
     ];
 
     ################################### START RELATIONS
-    public function procuration()
+    public function procurations()
     {
         return $this->hasMany(Procuration::class);
     }

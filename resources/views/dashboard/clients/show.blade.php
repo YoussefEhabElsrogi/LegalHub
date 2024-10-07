@@ -17,13 +17,13 @@
 
             <!-- توكيلات -->
             <h6 class="mt-4"><strong>التوكيلات:</strong></h6>
-            @if ($procuration->isEmpty())
+            @if ($procurations->isEmpty())
                 <div class="alert alert-warning">لا توجد توكيلات مسجلة لهذا العميل.</div>
             @else
                 <ul class="list-group">
-                    @foreach ($procuration as $index => $item)
+                    @foreach ($procurations as $index => $item)
                         <li class="list-group-item">
-                            <strong>توكيل رقم {{ $procuration->firstItem() + $index }}:</strong><br>
+                            <strong>توكيل رقم {{ $procurations->firstItem() + $index }}:</strong><br>
                             <strong>رقم التوكيل:</strong> {{ $item->authorization_number }}<br>
                             <strong>رقم التوكيل في الدفتر:</strong> {{ $item->notebook_number }}<br>
                             <strong>ملاحظات:</strong> {{ $item->notes ?? 'لا توجد ملاحظات' }}<br>
@@ -55,31 +55,31 @@
                 </ul>
 
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $procuration->appends(['sessions_page' => $sessions->currentPage()])->links() }}
+                    {{ $procurations->appends(['sessions_page' => $sessions->currentPage()])->links() }}
                 </div>
 
-                <p class="mt-3"><strong>إجمالي عدد التوكيلات:</strong> {{ $procuration->total() }} توكيلات</p>
+                <p class="mt-3"><strong>إجمالي عدد التوكيلات:</strong> {{ $procurations->total() }} توكيلات</p>
             @endif
 
-            <!-- الجلسات -->
-            <h6 class="mt-4"><strong>الجلسات:</strong></h6>
+            <!-- الدعاوي -->
+            <h6 class="mt-4"><strong>الدعاوي:</strong></h6>
             @if ($sessions->isEmpty())
                 <div class="alert alert-warning">لا توجد جلسات مسجلة لهذا العميل.</div>
             @else
                 <ul class="list-group">
                     @foreach ($sessions as $index => $session)
                         <li class="list-group-item">
-                            <strong>جلسة رقم {{ $sessions->firstItem() + $index }}:</strong><br>
+                            <strong>دعوي رقم {{ $sessions->firstItem() + $index }}:</strong><br>
                             <strong>نوع القضية:</strong> {{ $session->session_type }}<br>
                             <strong>رقم القضية:</strong> {{ $session->session_number }}<br>
                             <strong>اسم الخصم:</strong> {{ $session->opponent_name }}<br>
-                            <strong>تاريخ الجلسة:</strong>
+                            <strong>تاريخ الدعوي:</strong>
                             {{ \Carbon\Carbon::parse($session->session_date)->format('Y-m-d') }}<br>
                             <strong>الحالة:</strong> {{ $session->session_status }}<br>
                             <strong>ملاحظات:</strong> {{ $session->notes ?? 'لا توجد ملاحظات' }}<br>
                             <strong>عدد الملفات:</strong> {{ $session->files->count() }}
                             @if ($session->files->isEmpty())
-                                <div class="alert alert-info mt-2">لا توجد ملفات لهذه الجلسة.</div>
+                                <div class="alert alert-info mt-2">لا توجد ملفات لهذه الدعوي.</div>
                             @else
                                 <div class="row mt-3">
                                     @foreach ($session->files as $file)
@@ -105,10 +105,10 @@
                 </ul>
 
                 <div class="mt-3 d-flex justify-content-center">
-                    {{ $sessions->appends(['procuration_page' => $procuration->currentPage()])->links() }}
+                    {{ $sessions->appends(['procuration_page' => $procurations->currentPage()])->links() }}
                 </div>
 
-                <p class="mt-3"><strong>إجمالي عدد الجلسات:</strong> {{ $sessions->total() }} جلسات</p>
+                <p class="mt-3"><strong>إجمالي عدد الدعاوي:</strong> {{ $sessions->total() }} جلسات</p>
             @endif
 
             <!-- المصروفات -->

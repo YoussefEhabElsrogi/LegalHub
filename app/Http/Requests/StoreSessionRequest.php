@@ -21,12 +21,19 @@ class StoreSessionRequest extends FormRequest
      */
     public function rules(): array
     {
+        $sessionDate = $this->input('session_date');
+
         return [
             'client_id' => 'required|exists:clients,id',
-            'session_type' => 'required|string',  // هذا السطر للتحقق من إدخال session_type
-            'session_number' => 'required|string',
-            'opponent_name' => 'required|string',
-            'session_date' => 'required|date',
+            'session_type' => 'required|string|max:255',
+            'session_number' => 'required|string|max:255|unique:sessions,session_number',
+            'opponent_name' => 'required|string|max:255',
+            'session_date' => 'required|date|after_or_equal:today',
+            'reminder_dates' => 'nullable|array',
+            'reminder_dates.*' => [
+                'nullable',
+                'before:' . $sessionDate,
+            ],
             'session_status' => 'required|in:سارية,محفوظة',
             'notes' => 'nullable|string',
             'files.*' => 'nullable|file|mimes:pdf|max:2048',
@@ -41,24 +48,13 @@ class StoreSessionRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'client_id.required' => 'يجب اختيار العميل.',
-            'client_id.exists' => 'العميل المختار غير موجود.',
-            'session_type.required' => 'نوع الجلسة مطلوب.',
-            'session_type.string' => 'نوع الجلسة يجب أن يكون نص.',
-            'session_type.max' => 'نوع الجلسة يجب ألا يتجاوز 255 حرف.',
-            'session_number.required' => 'رقم الجلسة مطلوب.',
-            'session_number.string' => 'رقم الجلسة يجب أن يكون نص.',
-            'session_number.max' => 'رقم الجلسة يجب ألا يتجاوز 255 حرف.',
-            'session_number.unique' => 'رقم الجلسة موجود بالفعل.',
-            'opponent_name.required' => 'اسم الخصم مطلوب.',
-            'opponent_name.string' => 'اسم الخصم يجب أن يكون نص.',
-            'opponent_name.max' => 'اسم الخصم يجب ألا يتجاوز 255 حرف.',
-            'session_date.required' => 'تاريخ الجلسة مطلوب.',
-            'session_date.date' => 'تاريخ الجلسة يجب أن يكون تاريخ صحيح.',
-            'session_status.required' => 'حالة الجلسة مطلوبة.',
+            'session_number.unique' => 'رقم الدعوي موجود بالفعل.',
+            'session_date.date' => 'تاريخ الدعوي يجب أن يكون تاريخ صحيح.',
+            'session_date.after_or_equal' => 'تاريخ الدعوي يجب أن يكون تاريخ اليوم أو بعده.',
+            'reminder_dates.array' => 'تذكيرات يجب أن تكون مصفوفة.',
+            'reminder_dates.*.date' => 'يجب أن تكون تواريخ التذكير صحيحة.',
+            'reminder_dates.*.before' => 'تاريخ التذكير يجب أن يكون قبل تاريخ الدعوي.',
             'session_status.in' => 'الحالة يجب أن تكون سارية أو محفوظة.',
-            'files.*.mimes' => 'يجب أن تكون الملفات من نوع PDF فقط.',
-            'files.*.max' => 'حجم الملف لا يجب أن يتجاوز 2 ميجابايت.',
         ];
     }
 }

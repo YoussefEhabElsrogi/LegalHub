@@ -17,7 +17,7 @@
                             <i class="fas fa-app fa-2x mb-2" aria-hidden="true"></i>
                             <span class="d-block">اسم التطبيق</span>
                         </h5>
-                        <p class="card-text h4">{{ $setting->app_name }}</p>
+                        <p class="card-text h4">{{ $setting->app_name ?? env('APP_NAME') }}</p>
                     </div>
                 </div>
             </div>

@@ -2,50 +2,45 @@
 
 namespace App\Console;
 
+use App\Notifications\SessionReminderNotification;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Admin;
 use App\Models\Session;
-use App\Notifications\SessionReminderNotification;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class Kernel extends ConsoleKernel
 {
-    /**
-     * Define the application's command schedule.
-     */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->call(function () {
-            $sessions = Session::whereIn('session_date', [
-                Carbon::today()->addDays(3)->toDateString(),
-                Carbon::today()->addDays(2)->toDateString(),
-                Carbon::today()->addDays(1)->toDateString(),
-                Carbon::today()->toDateString(),
-            ])->get();
+        $admins = Admin::select(['id', 'email'])->get();
 
-            $admins = Admin::get(['id', 'email']);
-
-            foreach ($sessions as $session) {
-                $sessionDate = Carbon::parse($session->session_date);
-
-                $daysRemaining = $sessionDate->diffInDays(Carbon::today());
-
-                foreach ($admins as $admin) {
-                    if ($daysRemaining == 0) {
-                        Notification::send($admin, new SessionReminderNotification($session, $daysRemaining, true));
-                    } else {
-                        Notification::send($admin, new SessionReminderNotification($session, $daysRemaining, false)); 
+        $schedule->call(function () use ($admins) {
+            try {
+                $today = now()->startOfDay();
+                Session::with('reminders')->chunk(100, function ($sessions) use ($today, $admins) {
+                    foreach ($sessions as $session) {
+                        if ($session->reminders->isNotEmpty()) {
+                            foreach ($session->reminders as $reminder) {
+                                $reminderTime = Carbon::parse($reminder->reminder_time);
+                                if ($reminderTime->isSameDay($today)) {
+                                    Notification::send($admins, new SessionReminderNotification($session));
+                                    $reminder->delete();
+                                }
+                            }
+                        }
                     }
-                }
+                });
+            } catch (\Exception $e) {
+                Log::error('Error in scheduled task: ' . $e->getMessage());
             }
-        })->timezone('Africa/Cairo')->dailyAt('00:00');
+        })
+            ->dailyAt('01:00')
+            ->timezone('Africa/Cairo');
     }
 
-    /**
-     * Register the commands for the application.
-     */
     protected function commands(): void
     {
         $this->load(__DIR__ . '/Commands');

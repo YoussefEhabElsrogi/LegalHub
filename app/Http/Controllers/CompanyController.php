@@ -35,7 +35,13 @@ class CompanyController extends Controller
     {
         return $this->handleRequest($request, function () use ($request) {
             $validatedData = $request->validated();
-            $this->validateFees($validatedData);
+
+            $errorMessage = $this->validateFees($validatedData);
+
+            if ($errorMessage) {
+                setFlashMessage('error', $errorMessage);
+                return redirect()->back()->withInput();
+            }
 
             $company = $this->createCompany($validatedData);
             $this->handleFileUpload($request, $company->id);
@@ -62,7 +68,13 @@ class CompanyController extends Controller
         return $this->handleRequest($request, function () use ($request, $id) {
             $company = Company::findOrFail($id);
             $validatedData = $request->validated();
-            $this->validateFees($validatedData);
+
+            $errorMessage = $this->validateFees($validatedData);
+
+            if ($errorMessage) {
+                setFlashMessage('error', $errorMessage);
+                return redirect()->back()->withInput();
+            }
 
             $company->update($validatedData);
             $this->handleFileUpload($request, $company->id);
@@ -86,20 +98,24 @@ class CompanyController extends Controller
         return Company::create($validatedData);
     }
 
-    private function validateFees(array $validatedData): void
+    public function validateFees(array $validatedData): ?string
     {
         if ($validatedData['fees'] != $validatedData['remaining_amount'] + $validatedData['advance_amount']) {
-            throw new Exception('يجب أن تكون الأتعاب مساوية لمجموع المؤخر والمقدم.');
+            return 'يجب أن تكون الأتعاب مساوية لمجموع المؤخر والمقدم.';
         }
+
+        return null;
     }
 
     private function handleFileUpload($request, int $companyId): void
     {
-        $directory = "companies";
-        $uploadResult = $this->fileService->uploadFiles($request, $directory, $companyId, 'Company');
+        if ($request->hasFile('files')) {
+            $directory = "companies";
+            $uploadResult = $this->fileService->uploadFiles($request, $directory, $companyId, 'Company');
 
-        $message = $uploadResult !== 0 ? 'تم إضافة الملفات بنجاح.' : 'لم يتم رفع أي ملفات.';
-        setFlashMessage($uploadResult !== 0 ? 'success' : 'warning', $message);
+            $message = $uploadResult !== 0 ? 'تم إضافة الملفات بنجاح.' : 'لم يتم رفع أي ملفات.';
+            setFlashMessage($uploadResult !== 0 ? 'success' : 'warning', $message);
+        }
     }
 
     private function deleteCompanyFiles(Company $company): void
@@ -122,11 +138,14 @@ class CompanyController extends Controller
 
         try {
             $message = $operation();
+            if ($message instanceof \Illuminate\Http\RedirectResponse) {
+                return $message;
+            }
             DB::commit();
             return $this->flashAndRedirect('success', $message);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->flashAndRedirect('error', 'حدث خطا حاول مرة أخري');
+            return $this->flashAndRedirect('error', 'حدث خطأ حاول مرة أخرى');
         }
     }
 }

@@ -41,7 +41,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <x-no-data-message :colspan="4" message="لا يوجد مصروفات الان" />
+                            <x-no-data-message :colspan="5" message="لا يوجد مصروفات الان" />
                         </tr>
                     @endforelse
                 </tbody>

@@ -54,7 +54,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="advance_amount" class="form-label">المقدم</label>
                             <input type="number" name="advance_amount" class="form-control" id="advance_amount"
                                 placeholder="ادخل المقدم" value="{{ old('advance_amount') }}">

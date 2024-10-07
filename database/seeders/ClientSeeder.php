@@ -17,7 +17,7 @@ class ClientSeeder extends Seeder
      */
     public function run(): void
     {
-        $clients = Client::factory()->count(15)->create();
+        $clients = Client::factory()->count(2)->create();
 
         $clients->each(function ($client) {
 
@@ -34,7 +34,7 @@ class ClientSeeder extends Seeder
                 ]);
             }
 
-            $sessions = Session::factory(4)->create(['client_id' => $client->id]);
+            $sessions = Session::factory(1)->create(['client_id' => $client->id]);
 
             foreach ($sessions as $session) {
                 File::factory()->count(2)->create([

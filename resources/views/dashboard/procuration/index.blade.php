@@ -33,7 +33,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <x-no-data-message :colspan="4" message="لا يوجد توكيلات الان" />
+                            <x-no-data-message :colspan="5" message="لا يوجد توكيلات الان" />
                         @endforelse
                     </tbody>
                 </table>

@@ -12,7 +12,6 @@ class UpdateSessionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // نحتاج إلى تعديلها للسماح للمستخدم بتنفيذ الطلب
         return true;
     }
 
@@ -24,43 +23,45 @@ class UpdateSessionRequest extends FormRequest
     public function rules(): array
     {
         $sessionId = $this->route('session');
+        $sessionDate = $this->input('session_date');
+
         return [
             'client_id' => 'required|exists:clients,id',
+            'session_type' => 'required|string|max:255',
             'session_number' => [
                 'required',
                 'string',
                 'max:255',
                 Rule::unique('sessions')->ignore($sessionId),
             ],
-            'session_type' => 'required|string|max:255',
             'opponent_name' => 'required|string|max:255',
-            'session_date' => 'required|date',
-            'session_status' => 'required|string|in:سارية,محفوظة',
+            'session_date' => 'required|date|after_or_equal:today',
+            'reminder_dates' => 'nullable|array',
+            'reminder_dates.*' => [
+                'nullable',
+                'before:' . $sessionDate,
+            ],
+            'session_status' => 'required|in:سارية,محفوظة',
             'notes' => 'nullable|string',
-            'files.*' => 'nullable|mimes:pdf|max:2048',
+            'files.*' => 'nullable|file|mimes:pdf|max:2048',
         ];
     }
 
     /**
-     * Get the validation error messages that apply to the request.
+     * Get the error messages for the defined validation rules.
      *
-     * @return array
+     * @return array<string, string>
      */
     public function messages(): array
     {
         return [
-            'client_id.required' => 'الرجاء اختيار العميل.',
-            'client_id.exists' => 'العميل المختار غير موجود.',
-            'session_number.required' => 'الرجاء إدخال رقم الجلسة.',
-            'session_number.unique' => 'رقم الجلسة مستخدم بالفعل.',
-            'session_type.required' => 'الرجاء إدخال نوع الجلسة.',
-            'opponent_name.required' => 'الرجاء إدخال اسم الخصم.',
-            'opponent_name.string' => 'اسم الخصم يجب أن يكون نصاً.',
-            'opponent_name.max' => 'اسم الخصم يجب أن لا يزيد عن 255 حرفاً.',
-            'session_date.required' => 'الرجاء إدخال تاريخ الجلسة.',
-            'session_status.required' => 'الرجاء اختيار حالة الجلسة.',
-            'files.*.mimes' => 'الملفات يجب أن تكون بصيغة PDF.',
-            'files.*.max' => 'حجم الملف يجب أن لا يتجاوز 2MB.',
+            'session_number.unique' => 'رقم الدعوي مستخدم بالفعل.',
+            'session_date.date' => 'تاريخ الدعوي يجب أن يكون تاريخ صحيح.',
+            'session_date.after_or_equal' => 'تاريخ الدعوي يجب أن يكون تاريخ اليوم أو بعده.',
+            'reminder_dates.array' => 'تذكيرات يجب أن تكون مصفوفة.',
+            'reminder_dates.*.date' => 'يجب أن تكون تواريخ التذكير صحيحة.',
+            'reminder_dates.*.before' => 'تاريخ التذكير يجب أن يكون قبل تاريخ الدعوي.',
+            'session_status.in' => 'الحالة يجب أن تكون سارية أو محفوظة.',
         ];
     }
 }

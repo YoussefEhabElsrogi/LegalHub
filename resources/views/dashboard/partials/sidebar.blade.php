@@ -32,138 +32,44 @@
             <span class="menu-header-text">الأقسام</span>
         </li>
 
-        {{-- المشرفين --}}
+        <li class="menu-item {{ request()->routeIs('dashboard.home') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.home') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-smart-home"></i>
+                <div>الصفحة الرئيسية</div>
+            </a>
+        </li>
+
         @if (Auth::user()->hasRole('superadmin'))
-            <li class="menu-item active open">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                    <div>المشرفين</div>
-                </a>
-                <ul class="menu-sub">
-                    <li class="menu-item {{ request()->routeIs('admins.create') ? 'active' : '' }}">
-                        <a href="{{ route('admins.create') }}" class="menu-link">
-                            <div>اضافة مشرف</div>
-                        </a>
-                    </li>
-                    <li class="menu-item {{ request()->routeIs('admins.index') ? 'active' : '' }}">
-                        <a href="{{ route('admins.index') }}" class="menu-link">
-                            <div>عرض المشرفين</div>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            <x-menu-item title="المشرفين" icon="ti ti-users" createRoute="admins.create" createLabel="اضافة مشرف"
+                indexRoute="admins.index" indexLabel="عرض المشرفين" />
         @endif
 
-        {{-- الموكلين --}}
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-layout-sidebar"></i>
-                <div>الموكلين</div>
-            </a>
+        <x-menu-item title="الموكلين" icon="ti ti-user" createRoute="clients.create" createLabel="اضافة موكل"
+            indexRoute="clients.index" indexLabel="عرض الموكلين" />
 
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('clients.create') ? 'active' : '' }}">
-                    <a href="{{ route('clients.create') }}" class="menu-link">
-                        <div>اضافة موكل</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('clients.index') ? 'active' : '' }}">
-                    <a href="{{ route('clients.index') }}" class="menu-link">
-                        <div>عرض الموكلين</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <x-menu-item title="التوكيلات" icon="ti-files" createRoute="procurations.create" createLabel="اضافة توكيل"
+            indexRoute="procurations.index" indexLabel="عرض التوكيلات" />
 
-        {{-- التوكيلات --}}
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-files"></i>
-                <div>التوكيلات</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('procurations.create') ? 'active' : '' }}">
-                    <a href="{{ route('procurations.create') }}" class="menu-link">
-                        <div>اضافة توكيل</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('procurations.index') ? 'active' : '' }}">
-                    <a href="{{ route('procurations.index') }}" class="menu-link">
-                        <div>عرض التوكيلات</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <x-menu-item title="الدعاوي" icon="ti-calendar" createRoute="sessions.create" createLabel="اضافة دعوي"
+            indexRoute="sessions.index" indexLabel="عرض الدعاوي" />
 
-        {{-- الجلسات --}}
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-mail"></i>
-                <div>الجلسات</div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('sessions.create') ? 'active' : '' }}">
-                    <a href="{{ route('sessions.create') }}" class="menu-link">
-                        <div>اضافة جلسة</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('sessions.index') ? 'active' : '' }}">
-                    <a href="{{ route('sessions.index') }}" class="menu-link">
-                        <div>عرض الجلسات</div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <x-menu-item title="المصروفات الادارية" icon="ti-coins" createRoute="expenses.create"
+            createLabel="اضافة مصروف اداري" indexRoute="expenses.index" indexLabel="عرض المصروفات الادارية" />
 
-        {{-- المصروفات الادارية --}}
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-coins"></i>
-                <div>المصروفات الادارية </div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('expenses.create') ? 'active' : '' }}">
-                    <a href="{{ route('expenses.create') }}" class="menu-link">
-                        <div>اضافة مصروف اداري</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('expenses.index') ? 'active' : '' }}">
-                    <a href="{{ route('expenses.index') }}" class="menu-link">
-                        <div>عرض المصروفات الادارية </div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        {{-- الشركات --}}
-        <li class="menu-item">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons ti ti-home"></i>
-                <div> الشركات </div>
-            </a>
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('companies.create') ? 'active' : '' }}">
-                    <a href="{{ route('companies.create') }}" class="menu-link">
-                        <div>اضافة شركة</div>
-                    </a>
-                </li>
-                <li class="menu-item {{ request()->routeIs('companies.index') ? 'active' : '' }}">
-                    <a href="{{ route('companies.index') }}" class="menu-link">
-                        <div>عرض الشركات </div>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        <x-menu-item title="الشركات" icon="ti ti-building" createRoute="companies.create" createLabel="اضافة شركة"
+            indexRoute="companies.index" indexLabel="عرض الشركات" />
 
 
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">الأعدادات</span>
         </li>
-        <li class="menu-item">
+
+        <li class="menu-item {{ request()->routeIs('settings.show') ? 'active' : '' }}">
             <a href="{{ route('settings.show') }}" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div>الأعدادات</div>
             </a>
         </li>
     </ul>
+
 </aside>

@@ -6,12 +6,19 @@ use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
 use App\Services\ImageService;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
+    protected $defaultImagePath = 'uploads/images/default/default-image.jpeg';
+    protected $adminImageDir = 'uploads/images/admins';
+
     public function index()
     {
-        $regularAdmins = Admin::select('id', 'name', 'email', 'phone', 'role')->where('role', '!=', 'superadmin')->latest()->paginate(10);
+        $regularAdmins = Admin::select('id', 'name', 'email', 'phone', 'role')
+            ->where('role', '!=', 'superadmin')
+            ->latest()
+            ->paginate(10);
 
         return view('dashboard.admins.index', compact('regularAdmins'));
     }
@@ -24,21 +31,7 @@ class AdminController extends Controller
     public function store(StoreAdminRequest $request)
     {
         $validatedData = $request->validated();
-
-        $dir = 'uploads/images';
-        $defaultImagePath = "{$dir}/default/default-image.jpeg";
-
-        if ($request->hasFile('image')) {
-            try {
-                $newImageName = ImageService::uploadImage($request->file('image'), "{$dir}/admins");
-                $validatedData['image'] = $newImageName;
-            } catch (\Exception $e) {
-                setFlashMessage('error', 'فشل رفع الصورة حاول مرة أخرى');
-                return redirect()->back()->withInput();
-            }
-        } else {
-            $validatedData['image'] = $defaultImagePath;
-        }
+        $validatedData['image'] = $this->handleImageUpload($request);
 
         Admin::create($validatedData);
 
@@ -48,17 +41,17 @@ class AdminController extends Controller
 
     public function show(string $id)
     {
-        $admin = Admin::select('id', 'name', 'email', 'phone', 'role')->findOrFail($id);
+        $admin = Admin::findOrFail($id, ['id', 'name', 'email', 'phone', 'role']);
         return view('dashboard.admins.show', compact('admin'));
     }
 
-    public function edit($id)
+    public function edit(string $id)
     {
-        $admin = Admin::select('id', 'name', 'email', 'phone', 'role')->findOrFail($id);
+        $admin = Admin::findOrFail($id, ['id', 'name', 'email', 'phone', 'role']);
         return view('dashboard.admins.edit', compact('admin'));
     }
 
-    public function update(UpdateAdminRequest $request, $id)
+    public function update(UpdateAdminRequest $request, string $id)
     {
         $admin = Admin::findOrFail($id);
         $validatedData = $request->validated();
@@ -66,26 +59,63 @@ class AdminController extends Controller
         $admin->update($validatedData);
 
         setFlashMessage('success', 'تم تحديث المشرف بنجاح!');
-        return to_route('admins.index');
+        return redirect()->route('admins.index');
     }
 
     public function destroy(string $id)
     {
         $admin = Admin::findOrFail($id);
-        $dir = 'uploads/images';
-        $defaultImagePath = "{$dir}/default/default-image.jpeg";
+        $authUser = Auth::id();
 
-        if ($admin->image !== $defaultImagePath) {
+        if ($authUser !== $admin->id) {
+            setFlashMessage('error', 'لا يمكنك حذف هذا الحساب');
+            return redirect()->back();
+        }
+
+        $this->handleImageDeletion($admin);
+
+        $admin->delete();
+
+        setFlashMessage('success', 'تم حذف حسابك بنجاح!');
+        return redirect()->route('admins.index');
+    }
+
+
+    /**
+     * Handle image upload with validation.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return string
+     */
+    private function handleImageUpload($request): string
+    {
+        if ($request->hasFile('image')) {
+            try {
+                return ImageService::uploadImage($request->file('image'), $this->adminImageDir);
+            } catch (\Exception $e) {
+                setFlashMessage('error', 'فشل رفع الصورة حاول مرة أخرى');
+                redirect()->back()->withInput();
+            }
+        }
+
+        return $this->defaultImagePath;
+    }
+
+    /**
+     * Handle image deletion if it's not the default image.
+     *
+     * @param \App\Models\Admin $admin
+     * @return void
+     */
+    private function handleImageDeletion(Admin $admin): void
+    {
+        if ($admin->image !== $this->defaultImagePath) {
             try {
                 ImageService::deleteImage($admin->image);
             } catch (\Exception $e) {
                 setFlashMessage('error', 'فشل حذف الصورة');
-                return redirect()->back();
+                redirect()->back();
             }
         }
-
-        $admin->delete();
-        setFlashMessage('success', 'تم حذف المشرف بنجاح!');
-        return to_route('admins.index');
     }
 }

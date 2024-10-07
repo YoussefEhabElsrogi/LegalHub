@@ -1,55 +1,70 @@
 @extends('dashboard.master')
 
-@section('title', 'تفاصيل الجلسة')
+@section('title', 'تفاصيل الدعوي')
 
-@section('page','الجلسات/')
+@section('page', 'الدعاوي/')
 
-@section('page-title','عرض الجلسة')
+@section('page-title', 'عرض الدعوي')
 
 @section('content')
-    <div class="card">
-        <h5 class="card-header">تفاصيل الجلسة</h5>
-        <div class="card-body">
-            <h5 class="card-title">رقم الجلسة: {{ $session->session_number }}</h5>
-            <p class="card-text"><strong>نوع الجلسة:</strong> {{ $session->session_type }}</p>
-            <p class="card-text"><strong>اسم الخصم:</strong> {{ $session->opponent_name }}</p>
-            <p class="card-text"><strong>تاريخ الجلسة:</strong> {{ $session->session_date }}</p>
-            <p class="card-text"><strong>حالة الجلسة:</strong> {{ $session->session_status }}</p>
-            <p class="card-text"><strong>ملاحظات:</strong> {{ $session->notes ?? 'لا توجد ملاحظات' }}</p>
+    <div class="container mt-4">
+        <div class="card">
+            <h5 class="card-header text-center">تفاصيل الدعوي</h5>
+            <div class="card-body">
+                <h5 class="card-title">رقم الدعوي: <span class="text-primary">{{ $session->session_number }}</span></h5>
+                <p class="card-text"><strong>نوع الدعوي:</strong> {{ $session->session_type }}</p>
+                <p class="card-text"><strong>اسم الخصم:</strong> {{ $session->opponent_name }}</p>
+                <p class="card-text"><strong>تاريخ الدعوي:</strong> {{ $session->session_date }}</p>
+                <p class="card-text"><strong>حالة الدعوي:</strong>
+                    <span
+                        class="badge {{ $session->session_status == 'محفوظة' ? 'bg-secondary' : 'bg-success' }}">{{ $session->session_status }}</span>
+                </p>
+                <p class="card-text"><strong>ملاحظات:</strong> {{ $session->notes ?? 'لا توجد ملاحظات' }}</p>
 
-            <h6>تفاصيل العميل:</h6>
-            @if ($session->client)
-                <ul>
-                    <li><strong>اسم العميل:</strong> {{ $session->client->name }}</li>
-                    <li><strong>رقم الهاتف:</strong> {{ $session->client->phone ?? 'غير متوفر' }}</li>
-                    <li><strong>الرقم القومي:</strong> {{ $session->client->national_id ?? 'غير متوفر' }}</li>
-                </ul>
-            @else
-                <p>لا توجد تفاصيل عن العميل.</p>
-            @endif
+                <h6 class="mt-4">تفاصيل العميل:</h6>
+                @if ($session->client)
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>اسم العميل:</strong> {{ $session->client->name }}</li>
+                        <li class="list-group-item"><strong>رقم الهاتف:</strong>
+                            {{ $session->client->phone ?? 'غير متوفر' }}</li>
+                        <li class="list-group-item"><strong>الرقم القومي:</strong>
+                            {{ $session->client->national_id ?? 'غير متوفر' }}</li>
+                    </ul>
+                @else
+                    <p class="text-danger">لا توجد تفاصيل عن العميل.</p>
+                @endif
 
-            <h6>الملفات:</h6>
-            @if ($session->files->isEmpty())
-                <p>لا توجد ملفات لهذه الجلسة.</p>
-            @else
-                <div class="row">
-                    @foreach ($session->files as $index => $file)
-                        <div class="col-md-3 mb-3">
-                            <div class="card text-center">
-                                <div class="card-body">
-                                    <a href="{{ asset($file->path) }}" target="_blank">
-                                        <i class="fas fa-file-pdf fa-3x" style="color: red;"></i>
-                                    </a>
-                                    <p class="mt-2">ملف {{ $index + 1 }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
+                <h6 class="mt-4">التذكيرات:</h6>
+                @if ($session->reminders->isEmpty())
+                    <p>لا توجد تذكيرات لهذه الدعوي.</p>
+                @else
+                    <ul class="list-group">
+                        @foreach ($session->reminders as $reminder)
+                            <li class="list-group-item">
+                                <strong>وقت التذكير:</strong> {{ $reminder->reminder_time->format('Y-m-d') }}
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
+
+                <h6 class="mt-4">الملفات:</h6>
+                @if ($session->files->isEmpty())
+                    <p>لا توجد ملفات لهذه الدعوي.</p>
+                @else
+                    <div class="row">
+                        @foreach ($session->files as $file)
+                            <x-file-card :file="$file" />
+                        @endforeach
+                    </div>
+                @endif
+
+                <x-file-upload-form :action="route('attachments.upload', ['entityType' => 'Session', 'entityId' => $session->id])" />
+
+                <div class="mt-4">
+                    <a href="{{ route('sessions.edit', $session->id) }}" class="btn btn-primary">تعديل الدعوي</a>
+                    <a href="{{ route('sessions.index') }}" class="btn btn-secondary">العودة إلى القائمة</a>
                 </div>
-            @endif
-
-            <a href="{{ route('sessions.edit', $session->id) }}" class="btn btn-primary mt-3">تعديل الجلسة</a>
-            <a href="{{ route('sessions.index') }}" class="btn btn-secondary mt-3">العودة إلى القائمة</a>
+            </div>
         </div>
     </div>
 @endsection

@@ -111,8 +111,7 @@
                 </div>
                 <div class="col-md-4 text-center d-flex align-items-center flex-column">
                     <p class="card-text"><strong><i class="fas fa-image"></i> صورة الملف الشخصي:</strong></p>
-                    <div class="photo"
-                        style="width: 200px; height: 200px; overflow: hidden; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+                    <div class="photo" style="width: 200px; height: 200px; overflow: hidden; border-radius: 50%; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
                         @if ($admin->image)
                             <img style="object-fit: cover; width: 100%; height: 100%;" src="{{ asset($admin->image) }}"
                                 alt="Profile Image">

@@ -18,19 +18,7 @@
                 <form action="{{ route('procurations.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="mb-3">
-                        <label for="client_id" class="form-label">العميل</label>
-                        <select name="client_id" id="select2Basic" class="select2 form-select form-select-lg"
-                            data-allow-clear="true">
-                            <option value="">اختر عميل</option>
-                            @foreach ($clients as $client)
-                                <option value="{{ $client->id }}">{{ $client->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('client_id')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
+                    <x-client-select :clients="$clients" />
 
                     <div class="mb-3">
                         <label for="authorization_number" class="form-label">رقم التوكيل</label>

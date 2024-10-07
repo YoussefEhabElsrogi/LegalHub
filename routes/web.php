@@ -14,56 +14,46 @@ use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
-|--------------------------------------------------------------------------
+|--------------------------------------------------------------------
 | Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
+|--------------------------------------------------------------------
+| Register web routes for your application. These routes are loaded
+| by the RouteServiceProvider and are assigned to the "web" middleware group.
+| Make something great!
 */
 
-// Route for the login page
-Route::get('/', function () {
-    return view('auth.login');
-})->middleware('guest');
+// Public route for the login page
+Route::get('/', fn() => view('auth.login'))->middleware('guest');
 
 // Protected routes for authenticated users
 Route::middleware('auth.user')->group(function () {
 
-    // DASHBOARD ROUTES
+    // Dashboard route
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard.home');
 
-    // ADMIN ROUTES
+    // Resource routes for various controllers
+    Route::resources([
+        'clients' => ClientController::class,
+        'procurations' => ProcurationController::class,
+        'sessions' => SessionController::class,
+        'expenses' => ExpenseController::class,
+        'companies' => CompanyController::class,
+    ]);
+
+    // Resource route for admins with middleware
     Route::resource('admins', AdminController::class)->middleware('check.role');
 
-    // CLIENT ROUTES
-    Route::resource('clients', ClientController::class);
+    // Additional route for saved sessions
+    Route::get('session/saved', SessionStatausController::class)->name('session.saved');
 
-    // PROCURATION ROUTES
-    Route::resource('procurations', ProcurationController::class);
-
-    // SESSION ROUTES
-    Route::resource('sessions', SessionController::class);
-
-    // ADDITIONAL ROUTE FOR SAVED SESSIONS
-    Route::get('session/saved', [SessionStatausController::class, 'index'])->name('session.saved');
-
-    // EXPENSES ROUTES
-    Route::resource('expenses', ExpenseController::class);
-
-    // COMPANIES ROUTES
-    Route::resource('companies', CompanyController::class);
-
-    // FILES ROUTES
+    // File attachment routes
     Route::prefix('attachments')->controller(FileController::class)->group(function () {
         Route::post('{entityType}/{entityId}', 'uploadFile')->name('attachments.upload');
         Route::get('download/{file}', 'downloadFile')->name('attachments.download');
         Route::delete('{id}', 'destroyFile')->name('attachments.destroy');
     });
 
-    // PROFILE ROUTES
+    // Profile routes
     Route::prefix('profile')->name('profile.')->controller(ProfileController::class)->group(function () {
         Route::get('/change-password', 'updatePassword')->name('update-password');
         Route::get('/show/{id}', 'show')->name('show');
@@ -72,7 +62,7 @@ Route::middleware('auth.user')->group(function () {
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
 
-    // SETTING ROUTES
+    // Setting routes
     Route::controller(SettingController::class)->name('settings.')->group(function () {
         Route::get('settings', 'show')->name('show');
         Route::get('settings/edit', 'edit')->name('edit');

@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Admin;
 use App\Notifications\AdminRegisteredNotification;
+use Illuminate\Support\Facades\Log;
 
 class AdminObserver
 {
@@ -14,6 +15,7 @@ class AdminObserver
     {
         $admin->notify(new AdminRegisteredNotification($admin->name));
     }
+
 
     /**
      * Handle the Admin "updated" event.

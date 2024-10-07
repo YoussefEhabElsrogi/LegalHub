@@ -19,10 +19,9 @@ class AdminFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => bcrypt('123123123'), // password
+            'email' => 'admin.2024@secure-system.io',
+            'password' => bcrypt('C0mpl3xP@ssw0rd#Adm!n2024'),
             'phone' => fake()->phoneNumber(),
-            // 'role' => fake()->randomElement(['admin', 'superadmin']),
             'image' => 'uploads/images/default/default-image.jpeg',
             'remember_token' => Str::random(10),
         ];

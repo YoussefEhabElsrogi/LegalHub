@@ -9,7 +9,6 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor') }}/libs/select2/select2.css" />
     <style>
-        /* تحسينات إضافية على التصميم */
         .form-label {
             font-weight: bold;
         }
@@ -48,19 +47,7 @@
             <form action="{{ route('expenses.store') }}" method="POST" class="p-3">
                 @csrf
 
-                <div class="mb-3">
-                    <label for="client_id" class="form-label">العميل</label>
-                    <select name="client_id" id="select2Basic" class="select2 form-select form-select-lg"
-                        data-allow-clear="true">
-                        <option value="">اختر عميل</option>
-                        @foreach ($clients as $client)
-                            <option value="{{ $client->id }}">{{ $client->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('client_id')
-                        <div class="text-danger mt-1">{{ $message }}</div>
-                    @enderror
-                </div>
+                <x-client-select :clients="$clients" />
 
                 <div class="mb-3">
                     <label for="expense_name" class="form-label">اسم المصروف</label>
