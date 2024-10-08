@@ -10,8 +10,4 @@ class Setting extends Model
     use HasFactory;
 
     protected $fillable = ['facebook', 'instagram', 'twitter', 'app_name'];
-
-    ################################### START RELATIONS
-
-    ################################### END RELATIONS
 }

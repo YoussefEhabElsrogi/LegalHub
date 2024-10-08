@@ -10,18 +10,15 @@ use Exception;
 
 class FileController extends Controller
 {
+    /**
+     * Handle file upload based on entity type and ID.
+     */
     public function uploadFile(StoreFileRequest $request, string $entityType, int $entityId)
     {
-        $dir = match ($entityType) {
-            'Company' => 'companies',
-            'Procuration' => 'procurations',
-            'Session' => 'sessions',
-            default => null,
-        };
+        $dir = $this->getDirectoryFromEntityType($entityType);
 
         if ($dir === null) {
-            setFlashMessage('error', 'نوع الكيان غير معروف.');
-            return redirect()->back();
+            return $this->redirectWithMessage('error', 'نوع الكيان غير معروف.');
         }
 
         DB::beginTransaction();
@@ -29,44 +26,71 @@ class FileController extends Controller
         try {
             $uploadResult = FileService::uploadFiles($request, $dir, $entityId, $entityType);
 
-            if ($uploadResult === 0) {
-                setFlashMessage('warning', 'لم يتم رفع أي ملفات.');
-            } else {
-                setFlashMessage('success', 'تم إضافة الملفات بنجاح.');
-            }
+            $messageType = $uploadResult === 0 ? 'warning' : 'success';
+            $message = $uploadResult === 0 ? 'لم يتم رفع أي ملفات.' : 'تم إضافة الملفات بنجاح.';
 
             DB::commit();
+            return $this->redirectWithMessage($messageType, $message);
         } catch (Exception $e) {
             DB::rollBack();
-            setFlashMessage('error', 'فشل رفع الملف');
-            return redirect()->back()->withInput();
+            return $this->redirectWithMessage('error', 'فشل رفع الملف: ' . $e->getMessage());
         }
-
-        return redirect()->back();
     }
+
+    /**
+     * Handle file download.
+     */
     public function downloadFile(string $id)
     {
-        $file = File::findOrFail($id);
+        try {
+            $file = File::findOrFail($id);
+            $filePath = public_path($file->path);
 
-        $filePath = public_path($file->path);
+            if (!file_exists($filePath)) {
+                return $this->redirectWithMessage('error', 'الملف غير موجود.');
+            }
 
-        if (!file_exists($filePath)) {
-            setFlashMessage('error', 'الملف غير موجود.');
-            return redirect()->back();
+            return response()->download($filePath);
+        } catch (Exception $e) {
+            return $this->redirectWithMessage('error', 'فشل في تحميل الملف: ' . $e->getMessage());
         }
-
-        return response()->download($filePath);
     }
+
+    /**
+     * Handle file deletion.
+     */
     public function destroyFile(string $id)
     {
-        $file = File::findOrFail($id);
+        try {
+            $file = File::findOrFail($id);
+            FileService::deleteFile($file->path, 'uploads');
+            $file->delete();
 
-        FileService::deleteFile($file->path, 'uploads');
+            return $this->redirectWithMessage('success', 'تم حذف الملف بنجاح.');
+        } catch (Exception $e) {
+            return $this->redirectWithMessage('error', 'فشل حذف الملف: ' . $e->getMessage());
+        }
+    }
 
-        $file->delete();
+    /**
+     * Get the directory name based on entity type.
+     */
+    private function getDirectoryFromEntityType(string $entityType): ?string
+    {
+        return match ($entityType) {
+            'Company' => 'companies',
+            'Procuration' => 'procurations',
+            'Session' => 'sessions',
+            default => null,
+        };
+    }
 
-        setFlashMessage('success', 'تم حذف الملف بنجاح');
-
+    /**
+     * Redirect back with a flash message.
+     */
+    private function redirectWithMessage(string $type, string $message)
+    {
+        setFlashMessage($type, $message);
         return redirect()->back();
     }
 }
