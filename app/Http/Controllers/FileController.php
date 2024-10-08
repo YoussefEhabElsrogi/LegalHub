@@ -33,7 +33,7 @@ class FileController extends Controller
             return $this->redirectWithMessage($messageType, $message);
         } catch (Exception $e) {
             DB::rollBack();
-            return $this->redirectWithMessage('error', 'فشل رفع الملف: ' . $e->getMessage());
+            return $this->redirectWithMessage('error', 'فشل رفع الملف' );
         }
     }
 
@@ -52,7 +52,7 @@ class FileController extends Controller
 
             return response()->download($filePath);
         } catch (Exception $e) {
-            return $this->redirectWithMessage('error', 'فشل في تحميل الملف: ' . $e->getMessage());
+            return $this->redirectWithMessage('error', 'فشل في تحميل الملف');
         }
     }
 

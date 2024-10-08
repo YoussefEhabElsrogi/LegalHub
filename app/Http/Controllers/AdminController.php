@@ -79,14 +79,6 @@ class AdminController extends Controller
         setFlashMessage('success', 'تم حذف حسابك بنجاح!');
         return redirect()->route('admins.index');
     }
-
-
-    /**
-     * Handle image upload with validation.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return string
-     */
     private function handleImageUpload($request): string
     {
         if ($request->hasFile('image')) {
@@ -100,13 +92,6 @@ class AdminController extends Controller
 
         return $this->defaultImagePath;
     }
-
-    /**
-     * Handle image deletion if it's not the default image.
-     *
-     * @param \App\Models\Admin $admin
-     * @return void
-     */
     private function handleImageDeletion(Admin $admin): void
     {
         if ($admin->image !== $this->defaultImagePath) {

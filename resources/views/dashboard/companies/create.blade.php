@@ -36,19 +36,19 @@
                     <div class="row">
                         <x-client-select :clients="$clients" />
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="establishment_fees" class="form-label">رسوم التأسيس</label>
-                            <input type="number" name="establishment_fees" class="form-control" id="establishment_fees"
+                            <input type="text" name="establishment_fees" class="form-control" id="establishment_fees"
                                 placeholder="ادخل رسوم التأسيس" value="{{ old('establishment_fees') }}">
                             @error('establishment_fees')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-12 mb-3">
                             <label for="fees" class="form-label">الأتعاب</label>
-                            <input type="number" name="fees" class="form-control" id="fees"
-                                placeholder="ادخل الأتعاب" value="{{ old('fees') }}">
+                            <input type="text" name="fees" class="form-control" id="fees"
+                                placeholder="ادخل الأتعاب" value="{{ old('fees') }}" step="0.01">
                             @error('fees')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
@@ -56,8 +56,8 @@
 
                         <div class="col-md-12 mb-3">
                             <label for="advance_amount" class="form-label">المقدم</label>
-                            <input type="number" name="advance_amount" class="form-control" id="advance_amount"
-                                placeholder="ادخل المقدم" value="{{ old('advance_amount') }}">
+                            <input type="text" name="advance_amount" class="form-control" id="advance_amount"
+                                placeholder="ادخل المقدم" value="{{ old('advance_amount') }}" step="0.01">
                             @error('advance_amount')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror
@@ -65,8 +65,8 @@
 
                         <div class="col-md-12 mb-3">
                             <label for="remaining_amount" class="form-label">المؤخر</label>
-                            <input type="number" name="remaining_amount" class="form-control" id="remaining_amount"
-                                placeholder="ادخل المؤخر" value="{{ old('remaining_amount') }}">
+                            <input type="text" name="remaining_amount" class="form-control" id="remaining_amount"
+                                placeholder="ادخل المؤخر" value="{{ old('remaining_amount') }}" step="0.01">
                             @error('remaining_amount')
                                 <div class="error-message">{{ $message }}</div>
                             @enderror

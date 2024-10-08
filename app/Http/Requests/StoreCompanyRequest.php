@@ -22,13 +22,13 @@ class StoreCompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required|exists:clients,id', // التحقق من أن العميل موجود
+            'client_id' => 'required|exists:clients,id',
             'establishment_fees' => 'required|numeric|min:0',
             'fees' => 'required|numeric',
             'advance_amount' => 'required|numeric|min:0',
             'remaining_amount' => 'required|numeric|min:0',
             'notes' => 'nullable|string',
-            'files.*' => 'nullable|file|mimes:pdf|max:2048', // تعديل ليدعم ملفات PDF متعددة
+            'files.*' => 'nullable|file|mimes:pdf|max:2048',
         ];
     }
 }

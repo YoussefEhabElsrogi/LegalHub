@@ -16,33 +16,13 @@
             </h5>
 
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong>رسوم التأسيس:</strong>
-                        {{ number_format($company->establishment_fees, 2) }} جنيهاً
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong>الأتعاب:</strong>
-                        {{ number_format($company->fees) }} جنيهاً
-                    </p>
-                </div>
+                <x-info-box label="رسوم التأسيس" value="{{ $company->establishment_fees }} جنيهاً" />
+                <x-info-box label="الأتعاب" value="{{ $company->fees }} جنيهاً" />
             </div>
 
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong>المقدم:</strong>
-                        {{ number_format($company->advance_amount) }} جنيهاً
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong>المؤخر:</strong>
-                        {{ number_format($company->remaining_amount) }} جنيهاً
-                    </p>
-                </div>
+                <x-info-box label="المقدم" value="{{ $company->advance_amount }} جنيهاً" />
+                <x-info-box label="المؤخر" value="{{ $company->remaining_amount }} جنيهاً" />
             </div>
 
             @php
@@ -51,25 +31,11 @@
             @endphp
 
             <div class="row mb-3">
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong>تم سداد:</strong>
-                        {{ number_format($paid) }} ج.م
-                    </p>
-                </div>
-                <div class="col-md-6">
-                    <p class="card-text">
-                        <strong>الباقي:</strong>
-                        @if ($remaining > 0)
-                            {{ number_format($remaining) }} ج.م
-                        @else
-                            <span class="badge bg-success">تم سداد المبلغ بالكامل</span>
-                        @endif
-                    </p>
-                </div>
+                <x-info-box label="تم سداد" value="{{ $paid }} ج.م" />
+                <x-info-box label="الباقي" value="{{ $remaining > 0 ? $remaining . ' ج.م' : 'تم سداد المبلغ بالكامل' }}"
+                    :badge="$remaining <= 0 ? 'success' : ''" />
             </div>
 
-            <!-- عرض الملفات -->
             <h6 class="mt-4">الملفات:</h6>
             @if ($company->files->isEmpty())
                 <p>لا توجد ملفات لهذه الشركة.</p>
@@ -79,7 +45,6 @@
                         <x-file-card :file="$file" />
                     @endforeach
                 </div>
-
             @endif
 
             <x-file-upload-form :action="route('attachments.upload', ['entityType' => 'Company', 'entityId' => $company->id])" />
