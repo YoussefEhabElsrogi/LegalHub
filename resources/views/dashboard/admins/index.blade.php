@@ -10,6 +10,10 @@
     <div class="card">
         <x-card-header title="جميع المشرفين" action-url="{{ route('admins.create') }}" action-text="إضافة مشرف" />
 
+        <x-search-input id="search-admin" placeholder="ابحث عن المشرفين حسب الاسم أو البريد الإلكتروني..." />
+
+        <div id="status-message" class="alert alert-warning d-none"></div>
+
         <div class="table-responsive text-nowrap">
             <table class="table">
                 <thead class="table-dark">
@@ -21,7 +25,7 @@
                         <th scope="col">الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody class="table-border-bottom-0">
+                <tbody class="table-border-bottom-0" id="ajax-search_result">
                     @forelse($regularAdmins as $admin)
                         <tr>
                             <td>
@@ -46,3 +50,34 @@
         <x-pagination :collection="$regularAdmins" />
     </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('assets/js/responseHandler.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            let timer = null;
+
+            $(document).on('input', "#search-admin", function() {
+                clearTimeout(timer);
+                var search = $(this).val();
+
+                timer = setTimeout(function() {
+                    jQuery.ajax({
+                        url: "{{ route('search.admin') }}",
+                        type: "POST",
+                        datatype: "json",
+                        cache: false,
+                        data: {
+                            search: search,
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        success: handleResponse,
+                        error: function(xhr, status, error) {
+                            console.log('Error: ' + error);
+                        }
+                    });
+                }, 500);
+            });
+        });
+    </script>
+@endpush

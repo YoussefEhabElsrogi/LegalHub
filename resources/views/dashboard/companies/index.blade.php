@@ -10,6 +10,10 @@
     <div class="card">
         <x-card-header title="جميع الشركات" action-url="{{ route('companies.create') }}" action-text="إضافة شركة جديدة" />
 
+        <x-search-input id="search-company" placeholder="ابحث عن الشركات حسب اسم الموكل المالك للشركة..." />
+
+        <div id="status-message" class="alert alert-warning d-none"></div>
+
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -23,7 +27,7 @@
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ajax-search_result">
                     @forelse ($companies as $company)
                         <tr>
                             <td>{{ $company->client->name }}</td>
@@ -51,3 +55,35 @@
         <x-pagination :collection="$companies" />
     </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('assets/js/responseHandler.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            let timer = null;
+
+            $(document).on('input', "#search-company", function() {
+                clearTimeout(timer);
+                var search = $(this).val();
+
+                timer = setTimeout(function() {
+                    jQuery.ajax({
+                        url: "{{ route('search.company') }}",
+                        type: "POST",
+                        datatype: "json",
+                        cache: false,
+                        data: {
+                            search: search,
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        success: handleResponse,
+                        error: function(xhr, status, error) {
+                            console.log('Error: ' +
+                                error);
+                        }
+                    });
+                }, 500);
+            });
+        });
+    </script>
+@endpush

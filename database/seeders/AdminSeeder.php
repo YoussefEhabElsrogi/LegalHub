@@ -12,17 +12,6 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::updateOrCreate(
-            ['email' => 'superadmin.2024@secure-system.io'],
-            [
-                'name' => 'كريم عادل',
-                'email' => 'superadmin.2024@secure-system.io',
-                'password' => 'S3cur3Pa$$w0rd!2024#Admin',
-                'phone' => '01124684262',
-                'role' => 'superadmin',
-                'image' => 'uploads/images/default/default-image.jpeg'
-            ]
-        );
-        Admin::factory()->count(1)->create();
+        Admin::factory()->count(50)->create();
     }
 }

@@ -11,6 +11,11 @@
         <x-card-header title="جميع المصروفات الادارية" action-url="{{ route('expenses.create') }}"
             action-text="إضافة مصروف اداري" class="bg-primary text-white" />
 
+        <x-search-input id="search-expense"
+            placeholder="ابحث عن المصروفات الادارية حسب اسم الموكل أو اسم المصروف الاداري..." />
+
+        <div id="status-message" class="alert alert-warning d-none"></div>
+
         <div class="card-body">
             <table class="table table-hover table-bordered">
                 <thead class="thead-dark">
@@ -22,7 +27,7 @@
                         <th class="text-center">الإجراءات</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="ajax-search_result">
                     @forelse ($expenses as $expense)
                         <tr>
                             <td>{{ $expense->client->name }}</td>
@@ -53,3 +58,35 @@
         <x-pagination :collection="$expenses" />
     </div>
 @endsection
+
+@push('js')
+    <script src="{{ asset('assets/js/responseHandler.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            let timer = null;
+
+            $(document).on('input', "#search-expense", function() {
+                clearTimeout(timer);
+                var search = $(this).val();
+
+                timer = setTimeout(function() {
+                    jQuery.ajax({
+                        url: "{{ route('search.expense') }}",
+                        type: "POST",
+                        datatype: "json",
+                        cache: false,
+                        data: {
+                            search: search,
+                            '_token': '{{ csrf_token() }}'
+                        },
+                        success: handleResponse,
+                        error: function(xhr, status, error) {
+                            console.log('Error: ' +
+                                error);
+                        }
+                    });
+                }, 500);
+            });
+        });
+    </script>
+@endpush

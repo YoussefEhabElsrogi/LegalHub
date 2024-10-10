@@ -19,8 +19,8 @@ class AdminFactory extends Factory
     {
         return [
             'name' => fake()->name(),
-            'email' => 'admin.2024@secure-system.io',
-            'password' => bcrypt('C0mpl3xP@ssw0rd#Adm!n2024'),
+            'email' => $this->faker->unique()->safeEmail(),
+            'password' => bcrypt('123123123'),
             'phone' => fake()->phoneNumber(),
             'image' => 'uploads/images/default/default-image.jpeg',
             'remember_token' => Str::random(10),

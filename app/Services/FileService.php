@@ -6,8 +6,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Models\File;
-use Exception;
-use Illuminate\Support\Facades\DB;
 
 class FileService
 {

@@ -8,6 +8,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProcurationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SessionStatausController;
 use App\Http\Controllers\SettingController;
@@ -61,6 +62,17 @@ Route::middleware('auth.user')->group(function () {
         Route::patch('/{id}', 'update')->name('update');
         Route::delete('/{id}', 'destroy')->name('destroy');
     });
+
+    // Search routes
+    Route::controller(SearchController::class)->prefix('search')->name('search.')->group(function () {
+        Route::post('/admin', 'searchAdmin')->name('admin')->middleware('check.role');
+        Route::post('/client', 'searchClient')->name('client');
+        Route::post('/procuration', 'searchProcuration')->name('procuration');
+        Route::post('/session', 'searchSession')->name('session');
+        Route::post('/expense', 'searchExpense')->name('expense');
+        Route::post('/company', 'searchCompany')->name('company');
+    });
+
 
     // Setting routes
     Route::controller(SettingController::class)->name('settings.')->group(function () {
