@@ -15,7 +15,7 @@ class SearchController extends Controller
 {
     /**
      * @desc Search for admins by name or email.
-     * @router POST /search-admin
+     * @router POST /search/admin
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -26,7 +26,7 @@ class SearchController extends Controller
 
     /**
      * @desc Search for clients by name, phone, or national ID and return results as HTML.
-     * @router POST /search-client
+     * @router POST /search/client
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -37,18 +37,18 @@ class SearchController extends Controller
 
     /**
      * @desc Search for procurations by client or authorization_number and return results as HTML.
-     * @router POST /search-procuration
+     * @router POST /search/procuration
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function searchProcuration(Request $request): JsonResponse
     {
-        return $this->search(Procuration::class, ['authorization_number','notebook_number'], $request, 'dashboard.search.search-procuration', true);
+        return $this->search(Procuration::class, ['authorization_number', 'notebook_number'], $request, 'dashboard.search.search-procuration', true);
     }
 
     /**
      * @desc Search for sessions by client or session_number and return results as HTML.
-     * @router POST /search-session
+     * @router POST /search/session
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -59,7 +59,7 @@ class SearchController extends Controller
 
     /**
      * @desc Search for expenses by client or expense_name and return results as HTML.
-     * @router POST /search-expense
+     * @router POST /search/expense
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -70,7 +70,7 @@ class SearchController extends Controller
 
     /**
      * @desc Search for company by client and return results as HTML.
-     * @router POST /search-company
+     * @router POST /search/company
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
