@@ -23,6 +23,7 @@ class StoreCompanyRequest extends FormRequest
     {
         return [
             'client_id' => 'required|exists:clients,id',
+            'company_name' => 'required|unique:companies,company_name|string|max:255',
             'establishment_fees' => 'required|numeric|min:0',
             'fees' => 'required|numeric',
             'advance_amount' => 'required|numeric|min:0',

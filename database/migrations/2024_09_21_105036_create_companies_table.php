@@ -15,12 +15,13 @@ class CreateCompaniesTable extends Migration
     {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained(table: 'clients')->onDelete('cascade');
-            $table->decimal('establishment_fees', 10, 2); // رسوم التأسيس
-            $table->decimal('fees', 10, 2); // الأتعاب
-            $table->decimal('remaining_amount', 10, 2); // المبلغ المتبقي (موخر)
-            $table->decimal('advance_amount', 10, 2); // المبلغ المدفوع مسبقاً (مقدم)
-            $table->text('notes')->nullable(); // ملاحظات (اختياري)
+            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade');
+            $table->text('company_name');
+            $table->decimal('establishment_fees', 10, 2);
+            $table->decimal('fees', 10, 2);
+            $table->decimal('remaining_amount', 10, 2);
+            $table->decimal('advance_amount', 10, 2);
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

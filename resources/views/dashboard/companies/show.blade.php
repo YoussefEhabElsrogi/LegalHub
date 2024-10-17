@@ -15,6 +15,11 @@
                 <span class="text-dark">{{ $company->client->name }}</span>
             </h5>
 
+            <h5 class="card-title mb-3 mt-2">
+                <span class="text-muted">اسم الشركة:</span>
+                <span class="text-dark">{{ $company->company_name }}</span> 
+            </h5>
+
             <div class="row mb-3">
                 <x-info-box label="رسوم التأسيس" value="{{ $company->establishment_fees }} جنيهاً" />
                 <x-info-box label="الأتعاب" value="{{ $company->fees }} جنيهاً" />

@@ -10,7 +10,7 @@
     <div class="card">
         <x-card-header title="جميع الشركات" action-url="{{ route('companies.create') }}" action-text="إضافة شركة جديدة" />
 
-        <x-search-input id="search-company" placeholder="ابحث عن الشركات حسب اسم الموكل المالك للشركة..." />
+        <x-search-input id="search-company" placeholder="ابحث عن الشركات حسب اسم الشركة أو اسم الموكل المالك للشركة..." />
 
         <div id="status-message" class="alert alert-warning d-none"></div>
 
@@ -19,6 +19,7 @@
                 <thead>
                     <tr>
                         <th>اسم الموكل</th>
+                        <th>اسم الشركة</th>
                         <th>رسوم التأسيس</th>
                         <th>الأتعاب</th>
                         <th>المقدم</th>
@@ -30,24 +31,25 @@
                 <tbody id="ajax-search_result">
                     @forelse ($companies as $company)
                         <tr>
-                            <td>{{ $company->client->name }}</td>
-                            <td>{{ $company->establishment_fees }} جنيها</td>
-                            <td>{{ $company->remaining_amount + $company->advance_amount }} جنيها</td>
-                            <td>{{ $company->advance_amount }} جنيها</td>
-                            <td>{{ $company->remaining_amount }} جنيها</td>
-                            <td>
+                            <td class="nowrap">{{ $company->client->name }}</td>
+                            <td class="nowrap">{{ $company->company_name }}</td>
+                            <td class="nowrap">{{ $company->establishment_fees }} جنيها</td>
+                            <td class="nowrap">{{ $company->remaining_amount + $company->advance_amount }} جنيها</td>
+                            <td class="nowrap">{{ $company->advance_amount }} جنيها</td>
+                            <td class="nowrap">{{ $company->remaining_amount }} جنيها</td>
+                            <td class="nowrap">
                                 @if ($company->notes)
                                     {{ $company->notes }}
                                 @else
                                     <span class="text-danger">غير متوفر ملاحظات</span>
                                 @endif
                             </td>
-                            <td>
+                            <td class="nowrap">
                                 <x-action-buttons :model-id="$company->id" route-prefix="companies" />
                             </td>
                         </tr>
                     @empty
-                        <x-no-data-message :colspan="7" message="لا يوجد شركات مسجلة الان" />
+                        <x-no-data-message :colspan="8" message="لا يوجد شركات مسجلة الان" />
                     @endforelse
                 </tbody>
             </table>
@@ -55,6 +57,14 @@
         <x-pagination :collection="$companies" />
     </div>
 @endsection
+
+@push('css')
+    <style>
+        .nowrap {
+            white-space: nowrap;
+        }
+    </style>
+@endpush
 
 @push('js')
     <script src="{{ asset('assets/js/responseHandler.js') }}"></script>
@@ -78,8 +88,7 @@
                         },
                         success: handleResponse,
                         error: function(xhr, status, error) {
-                            console.log('Error: ' +
-                                error);
+                            console.log('Error: ' + error);
                         }
                     });
                 }, 500);

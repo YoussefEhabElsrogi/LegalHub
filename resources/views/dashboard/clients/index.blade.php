@@ -27,9 +27,13 @@
                 <tbody id="ajax-search_result">
                     @forelse($clients as $client)
                         <tr>
-                            <td class="d-flex align-items-center justify-content-center">
-                                <i class="ti ti-user ti-lg text-info me-2"></i>
-                                <span class="fw-bold">{{ $client->name }}</span>
+                            <td>
+                                <div class="grid-container">
+                                    <div class="icon-container">
+                                        <i class="ti ti-user ti-lg text-info"></i>
+                                    </div>
+                                    <span class="fw-bold">{{ $client->name }}</span>
+                                </div>
                             </td>
                             <td>{{ $client->phone }}</td>
                             <td>{{ $client->national_id }}</td>
@@ -53,6 +57,37 @@
     </div>
 @endsection
 
+@push('css')
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon-container {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-container i {
+            font-size: 24px;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        .fw-bold {
+            white-space: nowrap;
+        }
+    </style>
+@endpush
+
 @push('js')
     <script src="{{ asset('assets/js/responseHandler.js') }}"></script>
     <script>
@@ -75,8 +110,7 @@
                         },
                         success: handleResponse,
                         error: function(xhr, status, error) {
-                            console.log('Error: ' +
-                                error);
+                            console.log('Error: ' + error);
                         }
                     });
                 }, 500);

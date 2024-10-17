@@ -76,7 +76,7 @@ class SearchController extends Controller
      */
     public function searchCompany(Request $request): JsonResponse
     {
-        return $this->search(Company::class, [], $request, 'dashboard.search.search-company', true);
+        return $this->search(Company::class, ['company_name'], $request, 'dashboard.search.search-company', true);
     }
 
     /**

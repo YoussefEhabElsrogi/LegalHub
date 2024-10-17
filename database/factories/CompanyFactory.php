@@ -17,6 +17,7 @@ class CompanyFactory extends Factory
     public function definition(): array
     {
         return [
+            'company_name' => $this->faker->company(),
             'establishment_fees' => $this->faker->randomFloat(2, 1000, 5000),
             'fees' => $this->faker->randomFloat(2, 500, 3000),
             'remaining_amount' => $this->faker->randomFloat(2, 0, 1000),

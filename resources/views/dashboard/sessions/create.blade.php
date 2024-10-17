@@ -8,9 +8,6 @@
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
-@endpush
-
-@push('css')
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 @endpush
@@ -25,7 +22,8 @@
                 <x-client-select :clients="$clients" />
 
                 <div class="mb-3">
-                    <label for="session_type" class="form-label">نوع الدعوي</label>
+                    <label for="session_type" class="form-label">نوع الدعوي <span class="text-danger"
+                            style="font-size: 1.2rem;">*</span></label>
                     <input type="text" name="session_type" class="form-control" id="session_type"
                         placeholder="ادخل نوع الدعوي" value="{{ old('session_type') }}">
                     @error('session_type')
@@ -34,7 +32,8 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="session_number" class="form-label">رقم الدعوي</label>
+                    <label for="session_number" class="form-label">رقم الدعوي <span class="text-danger"
+                            style="font-size: 1.2rem;">*</span></label>
                     <input type="text" name="session_number" class="form-control" id="session_number"
                         placeholder="ادخل رقم الدعوي" value="{{ old('session_number') }}">
                     @error('session_number')
@@ -52,21 +51,23 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="session_date" class="form-label">تاريخ الدعوي</label>
+                    <label for="session_date" class="form-label">تاريخ الدعوي <span class="text-danger"
+                            style="font-size: 1.2rem;">*</span></label>
                     <input type="text" name="session_date" class="form-control datepicker" id="session_date"
                         placeholder="اختر تاريخ الدعوي" data-toggle="tooltip" data-placement="right"
-                        title="اختر تاريخ من التقويم" value="{{ old('session_date') }}">
+                        title="اختر تاريخ من التقويم" value="{{ old('session_date') }}" style="direction: rtl;">
                     @error('session_date')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
 
                 <div class="mb-3">
-                    <label for="reminder_dates" class="form-label">ذكرني في</label>
+                    <label for="reminder_dates" class="form-label">ذكرني في </label>
                     <input type="text" name="reminder_dates[]" class="form-control datepicker" id="reminder_dates"
                         placeholder="اختر تواريخ التذكير" data-toggle="tooltip" data-placement="right"
                         title="اختر تواريخ من التقويم"
-                        value="{{ old('reminder_dates') ? implode(',', old('reminder_dates')) : '' }}" multiple>
+                        value="{{ old('reminder_dates') ? implode(',', old('reminder_dates')) : '' }}" multiple
+                        style="direction: rtl;">
                     @error('reminder_dates.*')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror

@@ -15,7 +15,8 @@
                 @csrf
 
                 <div class="mb-3 p-3">
-                    <label for="name" class="form-label">الاسم</label>
+                    <label for="name" class="form-label">الاسم <span class="text-danger"
+                            style="font-size: 1.2em;">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-user"></i></span>
                         <input type="text" name="name" class="form-control" id="name"
@@ -27,7 +28,8 @@
                 </div>
 
                 <div class="mb-3 p-3">
-                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                    <label for="email" class="form-label">البريد الإلكتروني <span class="text-danger"
+                            style="font-size: 1.2em;">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         <input type="email" name="email" class="form-control" id="email"
@@ -40,7 +42,8 @@
                 </div>
 
                 <div class="mb-3 p-3">
-                    <label for="password" class="form-label">كلمة المرور</label>
+                    <label for="password" class="form-label">كلمة المرور <span class="text-danger"
+                            style="font-size: 1.2em;">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-lock"></i></span>
                         <input type="password" name="password" class="form-control" id="password"
@@ -63,7 +66,8 @@
                 </div>
 
                 <div class="mb-3 p-3">
-                    <label for="phone" class="form-label">رقم الهاتف</label>
+                    <label for="phone" class="form-label">رقم الهاتف <span class="text-danger"
+                            style="font-size: 1.2em;">*</span></label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="ti ti-phone"></i></span>
                         <input type="text" name="phone" class="form-control" id="phone"
@@ -76,7 +80,8 @@
                 </div>
 
                 <div class="mb-3 p-3">
-                    <label for="role" class="form-ِlabel">الدور</label>
+                    <label for="role" class="form-ِlabel">الدور <span class="text-danger"
+                            style="font-size: 1.2em;">*</span></label>
                     <select name="role" class="form-select" id="role" required>
                         <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                         <option value="superadmin" {{ old('role') == 'superadmin' ? 'selected' : '' }}>Super Admin</option>

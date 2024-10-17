@@ -15,6 +15,7 @@ class Company extends Model
 
     protected $fillable = [
         'client_id',
+        'company_name',
         'establishment_fees',
         'fees',
         'remaining_amount',

@@ -37,6 +37,13 @@
             background-color: #0056b3;
             border-color: #004080;
         }
+
+        .required:after {
+            content: " ★";
+            /* Add the red star */
+            color: red;
+            /* Set the color of the star */
+        }
     </style>
 @endpush
 
@@ -50,7 +57,7 @@
                 <x-client-select :clients="$clients" />
 
                 <div class="mb-3">
-                    <label for="expense_name" class="form-label">اسم المصروف</label>
+                    <label for="expense_name" class="form-label required">اسم المصروف</label>
                     <input type="text" name="expense_name" class="form-control" id="expense_name"
                         placeholder="ادخل اسم المصروف" value="{{ old('expense_name') }}">
                     @error('expense_name')
@@ -59,7 +66,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="amount" class="form-label">قيمة المصروف</label>
+                    <label for="amount" class="form-label required">قيمة المصروف</label>
                     <input type="number" name="amount" class="form-control" id="amount" placeholder="ادخل قيمة المصروف"
                         value="{{ old('amount') }}" step="0.01">
                     @error('amount')

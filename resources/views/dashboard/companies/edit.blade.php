@@ -39,6 +39,15 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="company_name" class="form-label">اسم الشركة</label>
+                        <input type="text" class="form-control" id="company_name" name="company_name"
+                            value="{{ old('company_name', $company->company_name) }}">
+                        @error('company_name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
                         <label for="establishment_fees" class="form-label">رسوم التأسيس</label>
                         <input type="number" step="0.01" class="form-control" id="establishment_fees"
                             name="establishment_fees" value="{{ old('establishment_fees', $company->establishment_fees) }}">
