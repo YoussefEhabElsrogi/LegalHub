@@ -34,67 +34,24 @@
 
         <div class="col-12 mt-4">
             <h5>إحصائيات الجلسات الشهرية</h5>
-            <div class="w-100" style="height: 350px;">
-                <canvas id="sessionsChart" style="width: 100%; height: 100%;"></canvas>
+            <div class="chart-container" style="position: relative; height: 400px; width: 100%;">
+                <canvas id="sessionsChart"></canvas>
             </div>
             <button id="download" class="btn btn-primary mt-2">تحميل الرسم البياني</button>
         </div>
 
-    </div>
-@endsection
+    @endsection
 
-@push('js')
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const changesPerMonth = @json($changesPerMonth);
-        const currentMonth = @json($currentMonth);
-        const monthNames = [
-            "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-            "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
-        ];
+    @push('js')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const changesPerMonth = @json($changesPerMonth);
+            const currentMonth = @json($currentMonth);
+            const monthNames = [
+                "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+            ];
+        </script>
 
-        const ctx = document.getElementById('sessionsChart').getContext('2d');
-        const myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: monthNames.slice(0, currentMonth),
-                datasets: [{
-                    label: 'التغير في عدد الجلسات',
-                    data: changesPerMonth,
-                    borderColor: 'blue',
-                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                    fill: true,
-                    tension: 0.1,
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: true
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y;
-                            }
-                        }
-                    }
-                },
-                interaction: {
-                    mode: 'nearest',
-                    axis: 'x'
-                }
-            }
-        });
-
-        // Function to download chart as an image
-        document.getElementById('download').addEventListener('click', function() {
-            const link = document.createElement('a');
-            link.href = document.getElementById('sessionsChart').toDataURL(
-                'image/png'); // Convert the canvas to image data
-            link.download = 'sessions-chart.png'; // File name for the downloaded image
-            link.click(); // Trigger the download
-        });
-    </script>
-@endpush
+        <script src="{{ asset('assets/js/chart.js') }}"></script>
+    @endpush

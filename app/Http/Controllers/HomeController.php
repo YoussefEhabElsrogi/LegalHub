@@ -49,10 +49,10 @@ class HomeController extends Controller
      * @param int $currentMonth
      * @return \Illuminate\Support\Collection
      */
-    private function getSessionsPerMonth($year, $currentMonth)
+    private function getSessionsPerMonth($currentYear, $currentMonth)
     {
-        return collect(range(1, $currentMonth))->map(function ($month) use ($year) {
-            return Session::whereYear('created_at', $year)
+        return collect(range(1, $currentMonth))->map(function ($month) use ($currentYear) {
+            return Session::whereYear('created_at', $currentYear)
                 ->whereMonth('created_at', $month)
                 ->count();
         });
