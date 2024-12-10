@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Admin;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DataSeeder extends Seeder
 {
@@ -13,24 +13,29 @@ class DataSeeder extends Seeder
      */
     public function run(): void
     {
+        // Super Admin
         Admin::updateOrCreate(
-            ['email' => 'superadmin.2024@secure-system.io'],
+            ['email' => 'superadmin@superadmin.com'],
             [
-                'name' => 'كريم عادل',
-                'email' => 'superadmin.2024@secure-system.io',
-                'password' => 'S3cur3Pa$$w0rd!2024#Admin',
+                'name' => 'Super Admin',
+                'email' => 'superadmin@superadmin.com',
+                'password' => '123123123',
                 'phone' => '01124684262',
                 'role' => 'superadmin',
                 'image' => 'uploads/images/default/default-image.jpeg'
             ]
         );
 
-        Admin::create([
-            'name' => 'Maureen Lueilwitz',
-            'email' => 'admin.2024@secure-system.io',
-            'password' => bcrypt('your_password'),
-            'phone' => '952.493.3881',
-            'image' => 'uploads/images/default/default-image.jpeg',
-        ]);
+        // Regular Admin
+        Admin::updateOrCreate(
+            ['email' => 'admin@admin.com'],
+            [
+                'name' => 'Maureen Lueilwitz',
+                'password' => '123123123',
+                'phone' => '952.493.3881',
+                'role' => 'admin',
+                'image' => 'uploads/images/default/default-image.jpeg',
+            ]
+        );
     }
 }

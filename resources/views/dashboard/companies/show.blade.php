@@ -17,7 +17,7 @@
 
             <h5 class="card-title mb-3 mt-2">
                 <span class="text-muted">اسم الشركة:</span>
-                <span class="text-dark">{{ $company->company_name }}</span> 
+                <span class="text-dark">{{ $company->company_name }}</span>
             </h5>
 
             <div class="row mb-3">
