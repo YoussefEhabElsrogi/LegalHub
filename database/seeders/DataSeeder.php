@@ -30,7 +30,7 @@ class DataSeeder extends Seeder
         Admin::updateOrCreate(
             ['email' => 'admin@admin.com'],
             [
-                'name' => 'Maureen Lueilwitz',
+                'name' => 'Admin',
                 'password' => '123123123',
                 'phone' => '952.493.3881',
                 'role' => 'admin',
